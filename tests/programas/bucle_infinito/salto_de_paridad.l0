@@ -1,0 +1,6 @@
+// BUCLE
+// i baja de a 2 desde un impar: nunca vale exactamente 0
+int i = 9;
+while (i != 0) {
+    i = i - 2;
+}

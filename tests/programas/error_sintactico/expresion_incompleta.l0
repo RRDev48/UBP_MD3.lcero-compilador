@@ -1,0 +1,2 @@
+// ERROR: sintáctico 2:12
+int x = 3 *;

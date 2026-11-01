@@ -1,0 +1,13 @@
+// SALIDA: 111
+// Cantidad de pasos de la sucesión de Collatz partiendo de 27
+int x = 27;
+int pasos = 0;
+while (x != 1) {
+    if (x % 2 == 0) {
+        x = x / 2;
+    } else {
+        x = 3 * x + 1;
+    }
+    pasos = pasos + 1;
+}
+print(pasos);

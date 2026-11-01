@@ -1,0 +1,3 @@
+// ERROR: semántico 3:7
+int x;
+print(x);

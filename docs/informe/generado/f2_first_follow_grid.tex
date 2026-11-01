@@ -1,0 +1,20 @@
+\nt{Programa} & sí & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, $\varepsilon$$\}$ & $\{$\tm{\$}$\}$ \\ \hline
+\nt{ListaSent} & sí & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, $\varepsilon$$\}$ & $\{$\tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Sent} & no & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Decl} & no & $\{$\tm{int}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{DeclInit} & sí & $\{$\tm{=}, $\varepsilon$$\}$ & $\{$\tm{;}$\}$ \\ \hline
+\nt{Asig} & no & $\{$\tm{id}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Si} & no & $\{$\tm{if}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{SiNo} & sí & $\{$\tm{else}, $\varepsilon$$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{CuerpoSiNo} & no & $\{$\tm{if}, \tm{\{}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Mientras} & no & $\{$\tm{while}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Imprimir} & no & $\{$\tm{print}$\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Bloque} & no & $\{$\tm{\{}$\}$ & $\{$\tm{int}, \tm{if}, \tm{else}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$ \\ \hline
+\nt{Expr} & no & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ & $\{$\tm{)}, \tm{;}$\}$ \\ \hline
+\nt{ExprRel} & sí & $\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, $\varepsilon$$\}$ & $\{$\tm{)}, \tm{;}$\}$ \\ \hline
+\nt{OpRel} & no & $\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}$\}$ & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ \\ \hline
+\nt{Arit} & no & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ & $\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$ \\ \hline
+\nt{AritCola} & sí & $\{$\tm{+}, \tm{-}, $\varepsilon$$\}$ & $\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$ \\ \hline
+\nt{Term} & no & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ & $\{$\tm{+}, \tm{-}, \tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$ \\ \hline
+\nt{TermCola} & sí & $\{$\tm{*}, \tm{/}, \tm{\%}, $\varepsilon$$\}$ & $\{$\tm{+}, \tm{-}, \tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$ \\ \hline
+\nt{Factor} & no & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ & $\{$\tm{+}, \tm{-}, \tm{*}, \tm{/}, \tm{\%}, \tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$ \\ \hline

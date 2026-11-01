@@ -1,0 +1,21 @@
+1 & \tm{\$} \nt{Programa} & \tm{id} \tm{=} \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (1) \nt{Programa} $\rightarrow$ \nt{ListaSent} \\
+2 & \tm{\$} \nt{ListaSent} & \tm{id} \tm{=} \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (2) \nt{ListaSent} $\rightarrow$ \nt{Sent} \nt{ListaSent} \\
+3 & \tm{\$} \nt{ListaSent} \nt{Sent} & \tm{id} \tm{=} \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (5) \nt{Sent} $\rightarrow$ \nt{Asig} \\
+4 & \tm{\$} \nt{ListaSent} \nt{Asig} & \tm{id} \tm{=} \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (13) \nt{Asig} $\rightarrow$ \tm{id} \tm{=} \nt{Expr} \tm{;} \\
+5 & \tm{\$} \nt{ListaSent} \tm{;} \nt{Expr} \tm{=} \tm{id} & \tm{id} \tm{=} \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & emparejar \tm{id} \\
+6 & \tm{\$} \nt{ListaSent} \tm{;} \nt{Expr} \tm{=} & \tm{=} \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & emparejar \tm{=} \\
+7 & \tm{\$} \nt{ListaSent} \tm{;} \nt{Expr} & \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (22) \nt{Expr} $\rightarrow$ \nt{Arit} \nt{ExprRel} \\
+8 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{Arit} & \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (31) \nt{Arit} $\rightarrow$ \nt{Term} \nt{AritCola} \\
+9 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{Term} & \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (35) \nt{Term} $\rightarrow$ \nt{Factor} \nt{TermCola} \\
+10 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} \nt{Factor} & \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & (41) \nt{Factor} $\rightarrow$ \tm{id} \\
+11 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} \tm{id} & \tm{id} \tm{*} \tm{num} \tm{;} \tm{\$} & emparejar \tm{id} \\
+12 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} & \tm{*} \tm{num} \tm{;} \tm{\$} & (36) \nt{TermCola} $\rightarrow$ \tm{*} \nt{Factor} \nt{TermCola} \\
+13 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} \nt{Factor} \tm{*} & \tm{*} \tm{num} \tm{;} \tm{\$} & emparejar \tm{*} \\
+14 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} \nt{Factor} & \tm{num} \tm{;} \tm{\$} & (40) \nt{Factor} $\rightarrow$ \tm{num} \\
+15 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} \tm{num} & \tm{num} \tm{;} \tm{\$} & emparejar \tm{num} \\
+16 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} \nt{TermCola} & \tm{;} \tm{\$} & (39) \nt{TermCola} $\rightarrow$ $\varepsilon$ \\
+17 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} \nt{AritCola} & \tm{;} \tm{\$} & (34) \nt{AritCola} $\rightarrow$ $\varepsilon$ \\
+18 & \tm{\$} \nt{ListaSent} \tm{;} \nt{ExprRel} & \tm{;} \tm{\$} & (24) \nt{ExprRel} $\rightarrow$ $\varepsilon$ \\
+19 & \tm{\$} \nt{ListaSent} \tm{;} & \tm{;} \tm{\$} & emparejar \tm{;} \\
+20 & \tm{\$} \nt{ListaSent} & \tm{\$} & (3) \nt{ListaSent} $\rightarrow$ $\varepsilon$ \\
+21 & \tm{\$} & \tm{\$} & aceptar \\

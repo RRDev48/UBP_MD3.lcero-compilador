@@ -1,0 +1,5 @@
+// ERROR: semántico 4:9
+int x = 1;
+if (x > 0) {
+    int x = 2;
+}

@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.venv/
+# auxiliares de LaTeX
+docs/informe/*.aux
+docs/informe/*.log
+docs/informe/*.fls
+docs/informe/*.fdb_latexmk
+docs/informe/*.out
+docs/informe/*.toc
+docs/informe/*.xdv
+docs/informe/*.synctex.gz
+# PDF (informe y figuras) y material de la defensa: se entregan por separado
+*.pdf
+docs/defensa/

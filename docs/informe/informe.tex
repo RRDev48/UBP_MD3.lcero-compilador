@@ -1,0 +1,1288 @@
+% Informe técnico — TPI L-Cero (formato de la plantilla UBP)
+% Compilar desde docs/informe/:   latexmk -xelatex informe.tex
+% Las tablas de generado/ se regeneran con: python scripts/generar_documentacion.py
+
+% ------------------------------------------------------------------ COMPLETAR
+\newcommand{\Asignatura}{[ASIGNATURA]}
+\newcommand{\Docente}{RODRÍGUEZ ISLEÑO, SANTIAGO HORACIO}
+\newcommand{\EtiquetaDocente}{Docente}            % p. ej. Profesora, Profesor
+\newcommand{\Autor}{RODRÍGUEZ, RODRIGO EMMANUEL \\ CARRIZO, MATHIAS EZEQUIEL \\ RODRÍGUEZ, TOMÁS AGUSTÍN}  % uno por línea, separados con \\
+\newcommand{\EtiquetaAutor}{Autores}               % Autor, si es uno solo
+\newcommand{\Repositorio}{[URL del repositorio Git de la cátedra]}
+\newcommand{\Titulo}{“L-Cero: compilador y máquina virtual abstracta”}
+\newcommand{\Actividad}{Evaluación Parcial N°2 (Trabajo Práctico Integrador)}
+\newcommand{\FechaCorta}{02/11/2026}
+\newcommand{\FechaLarga}{Córdoba, 2 de noviembre de 2026}
+\newcommand{\Carrera}{Ing. en Informática}
+% -----------------------------------------------------------------------------
+
+\documentclass[11pt,a4paper]{article}
+
+% --- Página: mismas medidas que la plantilla de Word (márgenes de 3,17 y 2,54 cm)
+\usepackage[a4paper, left=90pt, right=72.9pt, top=131pt, bottom=82pt,
+            headheight=12pt, headsep=8pt, footskip=20pt]{geometry}
+
+% --- Tipografías: Liberation Sans tiene las mismas medidas que Arial y Carlito que Calibri
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
+\setmainfont{Liberation Sans}
+\newfontfamily\calibri{Carlito}
+\setmonofont{DejaVu Sans Mono}[Scale=0.8]
+\linespread{0.97}                         % interlineado de 13,2 pt, como en Word
+\setlength{\parindent}{25.6pt}
+\setlength{\parskip}{7pt plus 1pt}
+\hyphenpenalty=10000 \exhyphenpenalty=10000   % Word no corta palabras
+\setlength{\emergencystretch}{4em}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx,float}
+\usepackage{array,longtable,makecell}
+\usepackage[shortlabels]{enumitem}
+\usepackage{fvextra}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pifont}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage[hidelinks]{hyperref}
+\usepackage[font=it, labelfont=it, labelsep=period, justification=centering, skip=5pt]{caption}
+
+\gappto\captionsspanish{%
+  \renewcommand{\tablename}{Tabla}%
+  \renewcommand{\figurename}{Figura}%
+  \renewcommand{\contentsname}{ÍNDICE}}
+
+% --- Títulos (Calibri negrita, como en la plantilla)
+\setcounter{secnumdepth}{2}
+\titleformat{\section}{\calibri\bfseries\fontsize{13}{15.6}\selectfont}{\thesection.}{0.28em}{}
+\titleformat{\subsection}{\calibri\bfseries\fontsize{10.5}{12.6}\selectfont}{\thesubsection}{0.28em}{}
+\titleformat{\subsubsection}{\calibri\bfseries\fontsize{10}{12}\selectfont}{}{0pt}{}
+\titlespacing*{\section}{0pt}{10pt}{2pt}
+\titlespacing*{\subsection}{0pt}{6pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{0pt}
+
+% --- Índice plano con puntos, como el de Word
+\renewcommand{\cfttoctitlefont}{\calibri\bfseries\fontsize{12}{14.4}\selectfont}
+\renewcommand{\cftaftertoctitle}{}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{6pt}
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsecleader}{\cftdotfill{0.6}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{0.6}}
+\renewcommand{\cftsecaftersnum}{.}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftbeforesecskip}{2pt}
+\setlength{\cftbeforesubsecskip}{2pt}
+\tocloftpagestyle{ubp}
+\settowidth{\cftsecnumwidth}{9.\ }
+\settowidth{\cftsubsecnumwidth}{9.9\ }
+\cftsetpnumwidth{1em}
+\cftsetrmarg{1.5em}
+
+% --- Encabezado y pie de la plantilla UBP (posiciones medidas sobre el original)
+\newcommand{\encabezadoUBP}{%
+\begin{tikzpicture}[remember picture, overlay, x=1pt, y=-1pt, shift={(current page.north west)}]
+  \node[anchor=north west, inner sep=0] at (90,41.8) {\includegraphics[width=58pt]{plantilla/ubp_logo_encabezado.png}};
+  \node[anchor=base, inner sep=0, font=\bfseries\fontsize{11}{13}\selectfont] at (311,68.7) {UNIVERSIDAD BLAS PASCAL};
+  \node[anchor=base, inner sep=0, font=\fontsize{11}{13}\selectfont] at (311,81.4) {MODALIDAD ON CAMPUS};
+  \node[anchor=base east, inner sep=0, font=\fontsize{11}{13}\selectfont] at (522.4,75.1)
+    {{\fontsize{8}{9}\selectfont Página} \thepage{} {\fontsize{8}{9}\selectfont de} \pageref*{LastPage}};
+  \draw[line width=0.75pt] (90,113) -- (522.4,113);
+  \draw[line width=0.9pt] (90,787) -- (522.4,787);
+  \node[anchor=base west, inner sep=0, font=\fontsize{9}{11}\selectfont] at (90,797.8) {Fecha: \FechaCorta};
+  \node[anchor=base east, inner sep=0, font=\fontsize{9}{11}\selectfont] at (522.4,797.8) {\Carrera};
+\end{tikzpicture}}
+\fancypagestyle{ubp}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+  \fancyhead[C]{\encabezadoUBP}}
+\pagestyle{ubp}
+
+% --- Tablas con grilla, como las de Word
+\renewcommand{\theadfont}{\bfseries}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcommand{\toprule}{\hline}
+\newcommand{\midrule}{\hline}
+\newcommand{\bottomrule}{\hline}
+\newenvironment{grilla}{\footnotesize\renewcommand{\arraystretch}{1.45}\setlength{\tabcolsep}{5pt}}{}
+
+% --- Teoremas (sin cursiva, como se escribirían en Word)
+\theoremstyle{definition}
+\newtheorem{teorema}{Teorema}
+\newtheorem{definicion}{Definición}
+
+% --- Notación
+\newcommand{\nt}[1]{\textit{#1}}
+\newcommand{\tm}[1]{\texttt{#1}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\First}{\mathrm{First}}
+\newcommand{\Follow}{\mathrm{Follow}}
+\newcommand{\Predict}{\mathrm{Predict}}
+\newcommand{\HALT}{\mathrm{HALT}}
+\renewcommand{\checkmark}{\ding{51}}
+\renewcommand{\paragraph}[1]{\subsubsection*{#1}}
+\fvset{fontsize=\footnotesize, frame=single, framesep=5pt, rulecolor=\color{black!60}}
+\setlist{itemsep=2pt, topsep=2pt, parsep=0pt}
+
+% \input primitivo: necesario para leer filas de tabla desde un archivo
+\makeatletter
+\newcommand{\tabla}[1]{\@@input #1 }
+\makeatother
+
+\input{generado/numeros.tex}
+
+\begin{document}
+
+% =============================================================================
+% Portada
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay, x=1pt, y=-1pt, shift={(current page.north west)}]
+  \node[anchor=north, inner sep=0] at (306.2,210) {\includegraphics[width=170.5pt]{plantilla/ubp_logo_portada.png}};
+  \node[anchor=base, inner sep=0, align=center, text width=432pt, font=\bfseries\fontsize{14}{16.8}\selectfont] at (306.2,459.2) {\Titulo};
+  % Un renglón cada 26,6 pt, como en la plantilla; los autores van uno debajo del otro.
+  \node[anchor=base west, inner sep=0, font=\fontsize{11}{13.2}\selectfont] at (90,530.1) {%
+    \renewcommand{\arraystretch}{1}\setlength{\tabcolsep}{0pt}%
+    \begin{tabular}[t]{l}
+      \textbf{Asignatura:} \Asignatura \\ \noalign{\vskip 13.4pt}
+      \textbf{Actividad:} \Actividad \\ \noalign{\vskip 13.4pt}
+      \textbf{Fecha:} \FechaCorta \\ \noalign{\vskip 13.4pt}
+      \textbf{\EtiquetaAutor:} \begin{tabular}[t]{@{}l@{}}\Autor\end{tabular} \\ \noalign{\vskip 13.4pt}
+      \textbf{\EtiquetaDocente:} \Docente
+    \end{tabular}};
+\end{tikzpicture}
+\null
+\newpage
+
+% =============================================================================
+% Resumen
+\begin{center}
+{\bfseries\fontsize{14}{16.8}\selectfont \Titulo\par}
+\vspace{22pt}
+Por:\par
+\vspace{12pt}
+\Autor\par
+\vspace{18pt}
+{\calibri\bfseries\fontsize{12}{14.4}\selectfont RESUMEN\par}
+\end{center}
+\vspace{-6pt}
+
+El presente trabajo diseña, formaliza, implementa y analiza un compilador y
+una máquina virtual abstracta para L-Cero, un lenguaje imperativo mínimo con
+variables enteras, condicionales, bucles \tm{while} y operaciones
+aritméticas. La implementación se realizó en Python y todos los analizadores
+se desarrollaron desde cero, sin generadores automáticos de parsers.
+
+El analizador léxico es un AFD mínimo de \NMin{} estados que se obtiene a
+partir de las expresiones regulares de los tokens, y el sintáctico es un
+reconocedor LL(1) cuya gramática se demuestra no ambigua con los conjuntos
+First y Follow. El código se traduce a una representación intermedia de tres
+direcciones y se ejecuta en una máquina de registros con cinta, cabezal,
+estados y función de transición explícitos. Ante un programa con errores, el
+compilador los informa todos en una sola ejecución, y además emite avisos
+sobre construcciones válidas pero sospechosas, como bucles que no terminan.
+
+El trabajo incluye la demostración de que la máquina es Turing-completa, la
+reducción desde el problema de la parada que prueba que la terminación de los
+programas es indecidible, la demostración de que la asignación de registros
+es NP-completa y el contraste entre la complejidad teórica de cada fase y
+mediciones reales de tiempo.
+
+\begin{flushright}
+\textbf{\textit{\FechaLarga}}
+\end{flushright}
+\newpage
+
+% =============================================================================
+\tableofcontents
+\newpage
+
+% =============================================================================
+\section{Introducción}
+
+L-Cero es un lenguaje imperativo mínimo que tiene variables enteras,
+condicionales \tm{if}/\tm{else}, bucles \tm{while}, operaciones aritméticas
+y una instrucción \tm{print}. Este informe presenta el diseño, la
+formalización, la implementación y el análisis de un compilador y una
+máquina virtual abstracta para ese lenguaje, integrando los cuatro pilares
+de la materia: la jerarquía de Chomsky, la teoría de autómatas, la
+computabilidad y la complejidad computacional.
+
+La implementación se realizó en Python. Como la consigna prohíbe usar
+generadores automáticos de parsers, todos los analizadores se escribieron
+desde cero: las expresiones regulares se representan como árboles, y tanto
+el AFD del lexer como la tabla LL(1) del parser se calculan con
+implementaciones propias de los algoritmos vistos en la materia. Tampoco se
+usó el módulo \tm{re} de Python.
+
+El compilador se organiza en las fases de la figura~\ref{fig:fases}. El
+código fuente nunca se ejecuta directamente: se traduce a una representación
+intermedia (RI) de tres direcciones, el optimizador le asigna los registros
+de la máquina y recién entonces se ejecuta en la máquina virtual. El
+desarrollo se dividió en tres hitos: el Hito~I abarca las fases 1 a 3
+(análisis léxico, sintáctico y semántico), el Hito~II las fases 4 a 6
+(representación intermedia, máquina abstracta e indecidibilidad) y el
+Hito~III las fases 7 y 8 (complejidad y asignación de registros).
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[caja/.style={draw, rounded corners=2pt, minimum height=0.9cm, minimum width=2.2cm, align=center, font=\small},
+  dato/.style={font=\scriptsize\itshape, align=center}, flecha/.style={-{Stealth[length=2mm]}},
+  node distance=0.7cm and 1.1cm]
+  \node[caja] (lex) {Lexer\\{\scriptsize AFD mínimo}};
+  \node[caja, right=of lex] (par) {Parser\\{\scriptsize LL(1)}};
+  \node[caja, right=of par] (sem) {Semántico};
+  \node[caja, right=of sem] (ri) {Generador\\de RI};
+  \node[caja, right=of ri] (opt) {Optimizador\\{\scriptsize (Chaitin)}};
+  \node[caja, right=of opt] (vm) {Máquina\\virtual};
+  \draw[flecha] (lex) -- node[dato, above] {tokens} (par);
+  \draw[flecha] (par) -- node[dato, above] {AST} (sem);
+  \draw[flecha] (sem) -- node[dato, above] {AST} (ri);
+  \draw[flecha] (ri) -- node[dato, above] {RI} (opt);
+  \draw[flecha] (opt) -- node[dato, above] {RI con\\registros} (vm);
+  \node[dato, below=0.1cm of lex] {Tipo 3};
+  \node[dato, below=0.1cm of par] {Tipo 2};
+  \node[dato, below=0.1cm of sem] {Tipo 1};
+  \node[dato, below=0.1cm of opt] {NP-completo};
+  \node[dato, below=0.1cm of vm] {Tipo 0};
+\end{tikzpicture}}
+\caption{Fases del compilador y nivel de la jerarquía de Chomsky de cada una.}
+\label{fig:fases}
+\end{figure}
+
+% =============================================================================
+\section{Desarrollo}
+
+\subsection{El lenguaje L-Cero}
+
+Un programa de ejemplo, que calcula el máximo común divisor por el algoritmo
+de Euclides:
+
+\begin{Verbatim}
+int a = 1071;
+int b = 462;
+while (b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+}
+print(a);   // imprime 21
+\end{Verbatim}
+
+\paragraph{Alfabeto y tokens}
+
+El alfabeto $\Sigma$ está formado por las letras \tm{a-z}, \tm{A-Z} y
+\tm{\_}, los dígitos, los símbolos \tm{+ - * / \% = ! < > ( ) \{ \} ;} y los
+blancos (espacio, tabulación, \tm{\textbackslash r} y \tm{\textbackslash n}).
+Cualquier otro carácter, por ejemplo \tm{@} o \tm{ñ}, solo puede aparecer
+dentro de un comentario; afuera de un comentario es un error léxico.
+
+Para que la tabla de transiciones del lexer no tenga una columna por cada
+carácter, los caracteres se agrupan en \NClases{} clases: dos caracteres van
+en la misma clase si ninguna expresión regular los distingue. Las letras que
+aparecen en las palabras reservadas (\tm{e f h i l n p r s t w}) tienen una
+clase cada una, porque el autómata tiene que seguirlas de a una; el resto de
+las letras forma una sola clase, lo mismo que los dígitos, y cada símbolo
+tiene su propia clase.
+
+La tabla~\ref{tab:er} muestra las expresiones regulares de los tokens. Si
+dos tokens reconocen la misma cadena (\tm{while} es una palabra reservada,
+pero también cumple la ER de \tm{ID}) gana el de mayor prioridad, y las
+palabras reservadas tienen más prioridad que \tm{ID}. Si reconocen cadenas
+de distinto largo, gana la más larga (regla del \emph{máximo bocado}):
+\tm{whilex} es un identificador y \tm{<=} es un solo token.
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|L{5.6cm}|L{8.3cm}|}
+\hline
+\thead{Token} & \thead{Expresión regular} \\ \hline
+\tm{INT}, \tm{IF}, \tm{ELSE}, \tm{WHILE}, \tm{PRINT} & la palabra misma: \tm{int}, \tm{if}, \tm{else}, \tm{while}, \tm{print} \\ \hline
+\tm{ID} & $\textit{letra}\,(\textit{letra} \mid \textit{dígito})^{*}$ \\ \hline
+\tm{NUM} & $\textit{dígito}\;\textit{dígito}^{*}$ \\ \hline
+\tm{EQ}, \tm{NEQ}, \tm{LE}, \tm{GE} & \tm{==}, \tm{!=}, \tm{<=}, \tm{>=} \\ \hline
+\tm{ASSIGN}, \tm{LT}, \tm{GT} & \tm{=}, \tm{<}, \tm{>} \\ \hline
+\tm{PLUS}, \tm{MINUS}, \tm{STAR}, \tm{SLASH}, \tm{PERCENT} & \tm{+}, \tm{-}, \tm{*}, \tm{/}, \tm{\%} \\ \hline
+\tm{LPAREN}, \tm{RPAREN}, \tm{LBRACE}, \tm{RBRACE}, \tm{SEMI} & \tm{(}, \tm{)}, \tm{\{}, \tm{\}}, \tm{;} \\ \hline
+Comentario (se descarta) & \tm{//}\,$(\Sigma - \{\backslash\tm{n}\})^{*}$ \\ \hline
+Espacio (se descarta) & $(\textit{esp} \mid \backslash\tm{n})(\textit{esp} \mid \backslash\tm{n})^{*}$ \\ \hline
+\end{tabular}
+\end{grilla}
+\caption{Expresiones regulares de los \NTokens{} tokens ($\textit{letra} = [\tm{a-zA-Z\_}]$, $\textit{dígito} = [\tm{0-9}]$).}
+\label{tab:er}
+\end{table}
+
+Otras decisiones del diseño léxico: las palabras reservadas distinguen
+mayúsculas (\tm{While} es un identificador); los números son siempre
+naturales y los negativos se escriben con el menos unario (\tm{-5} son dos
+tokens); no hay operadores lógicos, así que un \tm{!} que no forma \tm{!=}
+es un error; y solo hay comentarios de una línea.
+
+\paragraph{Sintaxis y semántica}
+
+La sintaxis del lenguaje, en EBNF, es la siguiente:
+
+\begin{Verbatim}[fontsize=\scriptsize]
+programa    = { sentencia } ;
+sentencia   = declaracion | asignacion | si | mientras | imprimir | bloque ;
+declaracion = "int" id [ "=" expresion ] ";" ;
+asignacion  = id "=" expresion ";" ;
+si          = "if" "(" expresion ")" bloque [ "else" ( bloque | si ) ] ;
+mientras    = "while" "(" expresion ")" bloque ;
+imprimir    = "print" "(" expresion ")" ";" ;
+bloque      = "{" { sentencia } "}" ;
+expresion   = aritmetica [ ( "==" | "!=" | "<" | "<=" | ">" | ">=" ) aritmetica ] ;
+aritmetica  = termino { ( "+" | "-" ) termino } ;
+termino     = factor { ( "*" | "/" | "%" ) factor } ;
+factor      = num | id | "(" expresion ")" | "-" factor ;
+\end{Verbatim}
+
+El cuerpo de un \tm{if}, de un \tm{else} y de un \tm{while} tiene que ser
+siempre un bloque entre llaves. Con esa decisión no aparece el problema del
+\emph{else colgante} y la gramática queda LL(1) sin reglas especiales
+(\tm{else if} se permite igual). Los relacionales tienen la menor
+precedencia y no se pueden encadenar: \tm{1 < 2 < 3} es un error de
+sintaxis.
+
+En cuanto a la semántica, el único tipo es el entero, sin límite de tamaño
+(esto es importante para la Turing-completitud de la sección~\ref{sec:maquina});
+\tm{/} trunca hacia cero y \tm{\%} da el resto con el signo del dividendo,
+como en C; los relacionales valen 1 o 0, y en un \tm{if} o un \tm{while}
+cualquier valor distinto de cero cuenta como verdadero. Las reglas sobre
+variables se describen en la sección~\ref{sec:semantico}.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 1: análisis léxico}
+
+\paragraph{Construcción del AFD}
+
+El AFD se calcula a partir de las expresiones regulares en tres pasos,
+implementados en \tm{lcero/automata.py}:
+
+\begin{enumerate}
+  \item \textbf{Construcción de Thompson.} Cada ER se convierte en un AFN-$\eps$
+  armando un fragmento por cada operación (símbolo, concatenación, unión y
+  clausura de Kleene). Los \NTokens{} fragmentos se unen con un estado
+  inicial nuevo y transiciones $\eps$. El resultado es un AFN-$\eps$ de
+  \NAFN{} estados, donde cada estado final indica qué token reconoce y con
+  qué prioridad.
+  \item \textbf{Construcción por subconjuntos.} Cada estado del AFD es un
+  conjunto de estados del AFN cerrado por $\eps$:
+  $\delta_D(S, a) = \eps\text{-clausura}(\mathrm{mover}(S, a))$. Si un
+  conjunto contiene finales de varios tokens, se queda con el de mayor
+  prioridad (así \tm{while} da \tm{WHILE} y no \tm{ID}). El conjunto vacío
+  funciona como estado sumidero. Resultan \NAFD{} estados.
+  \item \textbf{Minimización de Hopcroft.} Se parte de una partición que
+  separa los estados no finales y, entre los finales, uno por cada token, y
+  se refina hasta que no se puede partir más. Cada bloque de la partición
+  final es un estado del AFD mínimo, que tiene \NMin{} estados.
+\end{enumerate}
+
+\begin{definicion}[AFD mínimo del lexer]
+$M = (Q, C, \delta, q_0, F)$, donde
+$Q = \{q_0, \dots, q_{40}, q_\emptyset\}$ ($|Q| = \NMin$ y $q_\emptyset$ es
+el sumidero); $C$ es el conjunto de las \NClases{} clases de caracteres;
+$\delta : Q \times C \to Q$ es la función de transición, dada por la matriz
+del anexo~A; $q_0$ es el estado inicial; y
+$F = Q \setminus \{q_0, q_{13}, q_\emptyset\}$ ($|F| = \NFinales$). Cada
+estado final tiene asociado el token que acepta.
+\end{definicion}
+
+La figura~\ref{fig:afd} muestra la parte del autómata que reconoce
+identificadores, palabras reservadas y números. La parte de los operadores
+y la matriz $\delta$ completa ($\NMin \times \NClases$) están en el
+anexo~A. Por ejemplo, $q_{24}$ representa haber leído \tm{in}: con una
+\tm{t} pasa a $q_{33}$ (\tm{INT}) y con cualquier otra letra o dígito pasa
+a $q_2$, que es el estado de identificador.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{generado/afd_palabras.pdf}
+\caption{Parte del AFD mínimo que reconoce identificadores, palabras reservadas y números.}
+\label{fig:afd}
+\end{figure}
+
+\paragraph{Analizador léxico}
+
+Para reconocer los tokens, el lexer recorre el AFD desde la posición actual
+y recuerda el último estado final por el que pasó. Cuando el autómata cae en
+el sumidero (o se termina la entrada) emite el token de ese último estado
+final y continúa desde donde terminó. Los comentarios y los espacios se
+reconocen pero no se pasan al parser. Si no se llega a ningún estado final,
+hay un error léxico, que se informa con la línea y la columna; por ejemplo:
+\emph{«el carácter '@' no pertenece al alfabeto de L-Cero»}.
+
+Para verificar el autómata, las pruebas lo comparan con otros métodos: el
+AFD mínimo acepta lo mismo que el de subconjuntos, el algoritmo de Moore no
+encuentra estados equivalentes (es decir, es realmente mínimo) y el lexer da
+los mismos tokens que simular directamente el AFN-$\eps$ sobre 2000 cadenas
+al azar.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 2: análisis sintáctico}
+
+\paragraph{Gramática}
+
+Para pasar la EBNF a una gramática LL(1) se reemplazaron las repeticiones
+$\{\ \}$ por no terminales recursivos a derecha (\nt{ListaSent},
+\nt{AritCola}, \nt{TermCola}) y los opcionales $[\ ]$ por no terminales con
+una alternativa $\eps$ (\nt{DeclInit}, \nt{SiNo}, \nt{ExprRel}). Así no
+queda recursión a izquierda. La gramática tiene \NNoTerm{} no terminales,
+\NTerm{} terminales (contando \tm{\$}, el fin de entrada) y \NProd{}
+producciones:
+
+\begin{center}
+\small
+\begin{tabular}{@{}l c p{11.6cm}@{}}
+\tabla{generado/f2_gramatica_compacta.tex}
+\end{tabular}
+\end{center}
+
+\paragraph{Conjuntos First y Follow}
+
+$\First(\alpha)$ es el conjunto de terminales con los que puede empezar algo
+derivado de $\alpha$ (más $\eps$ si $\alpha$ puede derivar la cadena vacía),
+y $\Follow(A)$ son los terminales que pueden aparecer inmediatamente después
+de $A$ en alguna forma sentencial. Se calculan aplicando las siguientes
+reglas hasta que ningún conjunto cambia:
+
+\begin{itemize}
+  \item $\First(A)$ es la unión de $\First(\alpha)$ para cada producción
+  $A \to \alpha$, donde $\First(X_1 \cdots X_m)$ incluye $\First(X_1)$ y, si
+  $X_1$ es anulable, también $\First(X_2 \cdots X_m)$, y así sucesivamente.
+  \item $\tm{\$} \in \Follow(\nt{Programa})$; si $A \to \alpha B \beta$,
+  entonces $\First(\beta) - \{\eps\} \subseteq \Follow(B)$; y si además
+  $\beta$ es anulable, $\Follow(A) \subseteq \Follow(B)$.
+\end{itemize}
+
+La tabla~\ref{tab:ff} muestra el resultado. El cálculo paso a paso, con lo
+que aporta cada producción, está en el anexo~B.
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|l|C{1.1cm}|L{4.8cm}|L{5.5cm}|}
+\hline
+\thead{$A$} & \thead{Anul.} & \thead{$\First(A)$} & \thead{$\Follow(A)$} \\ \hline
+\tabla{generado/f2_first_follow_grid.tex}
+\end{tabular}
+\end{grilla}
+\caption{Anulables, First y Follow de cada no terminal.}
+\label{tab:ff}
+\end{table}
+
+\paragraph{La gramática no es ambigua}
+
+Para cada producción se define
+$\Predict(A \to \alpha) = \First(\alpha) - \{\eps\}$, más $\Follow(A)$ si
+$\alpha$ es anulable. La gramática es LL(1) si las producciones de un mismo
+no terminal tienen conjuntos Predict disjuntos. La tabla~\ref{tab:predict}
+muestra los Predict de los \NConAlternativas{} no terminales que tienen más
+de una producción, y en todos los casos son disjuntos. El caso más
+importante es \nt{SiNo}: como los cuerpos del \tm{if} terminan siempre en
+\tm{\}}, \tm{else} no pertenece a $\Follow(\nt{SiNo})$ y no hay conflicto.
+Si se permitieran cuerpos sin llaves, \tm{else} sí estaría en ese Follow y
+aparecería el conflicto del else colgante (una de las pruebas lo verifica
+con la gramática ambigua).
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|l|L{11.1cm}|}
+\hline
+\thead{$A$} & \thead{Predict de cada producción de $A$ (con su número)} \\ \hline
+\tabla{generado/f2_predict_compacto_grid.tex}
+\end{tabular}
+\end{grilla}
+\caption{Conjuntos Predict de los no terminales con más de una producción.}
+\label{tab:predict}
+\end{table}
+
+\begin{teorema}
+Una gramática LL(1) no es ambigua. En particular, la gramática de L-Cero no
+es ambigua.
+\end{teorema}
+
+\begin{proof}
+Supóngase que una cadena $w$ tiene dos derivaciones por izquierda distintas
+y considérese el primer paso en que se separan. Ambas llegaron a la misma
+forma sentencial $xA\gamma$ (con $x$ formado por terminales y $w = xy$); una
+aplica $A \to \alpha$ y la otra $A \to \beta$. Sea $a$ el primer símbolo de
+$y\tm{\$}$. Si $a$ proviene de $\alpha$, entonces $a \in \First(\alpha)$; si
+no, $\alpha$ es anulable y $a$ proviene de lo que sigue a $A$, por lo que
+$a \in \Follow(A)$. En ambos casos $a \in \Predict(A \to \alpha)$, y por el
+mismo razonamiento $a \in \Predict(A \to \beta)$, lo que contradice que los
+Predict sean disjuntos. Como la tabla~\ref{tab:predict} muestra que la
+gramática de L-Cero es LL(1), no es ambigua.
+\end{proof}
+
+Con los Predict se arma la tabla LL(1) $M[A, a]$ (anexo~C), que tiene
+\NCeldasLL{} celdas ocupadas y ninguna con dos producciones.
+
+\paragraph{Reconocedor sintáctico}
+
+El parser (\tm{lcero/parser.py}) es un autómata de pila con un solo estado,
+$P = (\{q\}, T, N \cup T \cup \{\tm{\$}\}, \delta, q, \tm{\$}, \emptyset)$,
+que acepta por pila vacía. Si en el tope hay un no terminal $A$ y el
+próximo token es $a$, reemplaza $A$ por el lado derecho de $M[A, a]$
+(invertido, para que el primer símbolo quede arriba); si en el tope hay un
+terminal igual al próximo token, lo desapila y avanza. Como decide mirando
+un solo token, es determinista. La tabla~\ref{tab:traza} muestra la traza
+para \input{generado/f2_traza_fuente.tex} (el tope de la pila está a la
+derecha). Mientras reconoce, el parser construye el árbol de derivación, que
+luego se transforma en un árbol de sintaxis abstracta (AST).
+
+\begin{table}[H]
+\centering
+\begin{grilla}\scriptsize\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|r|l|r|l|}
+\hline
+\thead{Paso} & \thead{Pila} & \thead{Entrada} & \thead{Acción} \\ \hline
+\tabla{generado/f2_traza_grid.tex}
+\end{tabular}
+\end{grilla}
+\caption{Traza del autómata de pila.}
+\label{tab:traza}
+\end{table}
+
+Cuando la celda $M[A, a]$ está vacía hay un error de sintaxis. Para que el
+mensaje sea útil, si $A$ es anulable se aplica igual $A \to \eps$ y el error
+se detecta más abajo en la pila, sin consumir el token. Por ejemplo, si
+falta un punto y coma el mensaje es \emph{«se esperaba un operador o ';',
+pero se encontró 'print'»}, con la línea y la columna.
+
+\paragraph{Recuperación de errores}
+
+Para no detenerse en el primer error, el parser usa recuperación en modo
+pánico, que se apoya en los conjuntos First y Follow calculados antes:
+
+\begin{itemize}
+  \item Si en el tope hay un terminal distinto del próximo token, se supone que
+  ese terminal faltaba y se lo desapila, como si se hubiera insertado.
+  \item Si la celda $M[A, a]$ está vacía, se descartan tokens hasta encontrar
+  uno de $\First(A)$, y entonces se vuelve a intentar $A$, o uno de
+  $\Follow(A)$, y entonces se abandona $A$. El fin de entrada nunca se
+  descarta.
+\end{itemize}
+
+Cada paso consume un token o achica la pila, así que el análisis siempre
+termina. Para no informar errores en cascada, después de cada error no se
+informan otros hasta emparejar tres tokens (la misma regla que usa Bison).
+De esta forma, un programa con varios errores los muestra todos en una sola
+ejecución, como en la figura~\ref{fig:errores}.
+
+\begin{figure}[H]
+\begin{Verbatim}[breaklines]
+int x = 1
+int y = x +;
+print(y);
+while (x < 3 {
+    x = x + 1;
+}
+\end{Verbatim}
+\vspace{2pt}
+\begin{Verbatim}[breaklines]
+Error sintáctico (línea 2, columna 1): se esperaba un operador o ';', pero se encontró 'int'
+Error sintáctico (línea 2, columna 12): se esperaba una expresión, pero se encontró ';'
+Error sintáctico (línea 4, columna 14): se esperaba un operador aritmético o ')', pero se encontró '{'
+3 errores
+\end{Verbatim}
+\caption{Programa con tres errores de sintaxis (arriba) y lo que informa el compilador (abajo).}
+\label{fig:errores}
+\end{figure}
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 3: análisis semántico}
+\label{sec:semantico}
+
+El análisis semántico (\tm{lcero/semantic.py}) recorre el AST y controla
+tres reglas: toda variable debe estar declarada antes de usarse; no se puede
+declarar dos veces una variable visible, tampoco en un bloque anidado (como
+en Java); y no se puede leer una variable que, en algún camino posible,
+todavía no tiene valor. Los ámbitos se manejan con un diccionario de nombres
+visibles y una pila con lo declarado en cada bloque. Para la inicialización
+se lleva el conjunto de variables que seguro tienen valor: después de un
+\tm{if} con \tm{else} es la intersección de lo que dejan las dos ramas, y
+después de un \tm{if} sin \tm{else} o de un \tm{while} es el mismo que
+antes, porque el cuerpo podría no ejecutarse.
+
+Esta fase tampoco se detiene en el primer error: cada error se registra y el
+análisis sigue con el resto del programa. Para no repetir el mismo problema,
+cada variable sin declarar y cada variable sin inicializar se informa una
+sola vez, y una doble declaración no reemplaza a la declaración original.
+
+\paragraph{Por qué esta fase excede a un autómata con pila}
+
+Sea $L_{\mathrm{sem}}$ el conjunto de los programas que pasan las tres
+primeras fases.
+
+\begin{teorema}
+$L_{\mathrm{sem}}$ no es libre de contexto.
+\end{teorema}
+
+\begin{proof}
+Sea el lenguaje regular
+$R = \tm{int}\,\sqcup\,(\tm{a}|\tm{b})^{+}\tm{;}(\tm{a}|\tm{b})^{+}\tm{=0;}$,
+donde $\sqcup$ es un espacio. Un programa de la forma
+$\tm{int}\sqcup u\tm{;}v\tm{=0;}$ es válido solo si $v$ está declarada, es
+decir, si $v = u$. Entonces
+$L' = L_{\mathrm{sem}} \cap R = \{\tm{int}\sqcup w\tm{;}w\tm{=0;} : w \in \{\tm{a},\tm{b}\}^{+}\}$.
+Si $L_{\mathrm{sem}}$ fuera libre de contexto, $L'$ también lo sería
+(intersección con un regular). Se aplica el lema de bombeo con
+$s = \tm{int}\sqcup\tm{a}^p\tm{b}^p\tm{;}\tm{a}^p\tm{b}^p\tm{=0;}$, donde $p$
+es la constante del lema, y una descomposición $s = uvxyz$ con
+$|vxy| \le p$ y $|vy| \ge 1$:
+\begin{itemize}
+  \item si $v$ o $y$ contienen algún símbolo fijo (\tm{i}, \tm{n}, \tm{t},
+  $\sqcup$, \tm{;}, \tm{=}, \tm{0}), al bombear con $i = 0$ la cadena deja de
+  pertenecer a $R$;
+  \item si $vxy$ está dentro de una sola copia de $w$, al bombear cambia esa
+  copia y la otra no, por lo que las copias quedan distintas;
+  \item si $vxy$ abarca el final de la primera copia y el principio de la
+  segunda, $v$ está entre las \tm{b} de la primera e $y$ entre las \tm{a} de
+  la segunda. Con $i = 2$, la primera copia tiene más \tm{b} que la segunda
+  (si $|v| > 0$) o la segunda tiene más \tm{a} (si $|v| = 0$).
+\end{itemize}
+En todos los casos $uv^2xy^2z$ o $uv^0xy^0z$ no pertenece a $L'$, así que
+$L'$ no es libre de contexto, y $L_{\mathrm{sem}}$ tampoco.
+\end{proof}
+
+En consecuencia, ningún autómata de pila (ni ningún parser LL o LR) puede
+controlar que las variables estén declaradas: hay que comparar dos nombres
+que pueden estar arbitrariamente lejos, y una pila no lo permite sin perder
+lo que tiene debajo. Sí alcanza un autómata linealmente acotado: cada
+control se puede hacer recorriendo la entrada y marcando celdas, sin usar
+más espacio que el de la entrada (comparar cada uso con las declaraciones
+anteriores letra por letra, contar llaves para saber si la declaración es
+visible y buscar caminos en el grafo de flujo para la inicialización). Por
+el teorema de Kuroda, $L_{\mathrm{sem}}$ es sensible al contexto (Tipo~1).
+
+\paragraph{Avisos del compilador}
+
+Además de los errores, el compilador emite avisos sobre construcciones
+válidas pero casi seguramente equivocadas (\tm{lcero/lint.py}). Los avisos
+no rechazan el programa: se muestran al ejecutarlo (la opción
+\tm{--sin-avisos} los oculta) y con el comando \tm{lcero avisos}. Se
+detectan cuatro casos:
+
+\begin{itemize}
+  \item variables que se declaran y nunca se usan, o que reciben valores que
+  nunca se leen;
+  \item condiciones constantes en un \tm{if} o un \tm{while}, es decir, una
+  rama que nunca se ejecuta o un bucle que no termina;
+  \item condiciones de \tm{while} en las que ninguna variable se asigna dentro
+  del cuerpo: como L-Cero no tiene \tm{break} ni expresiones con efectos, la
+  condición vale siempre lo mismo y, si el bucle entra, no termina;
+  \item código inalcanzable, es decir, sentencias que están después de una que
+  nunca termina.
+\end{itemize}
+
+El programa de la figura~\ref{fig:avisos} produce los cuatro tipos de aviso.
+
+\begin{figure}[H]
+\begin{Verbatim}[breaklines]
+int i = 0;
+int suma = 0;
+int sinUso = 5;
+while (i < 10) {
+    suma = suma + 2;
+}
+if (1 > 2) {
+    print(suma);
+}
+while (1 == 1) {
+}
+print(i);
+\end{Verbatim}
+\vspace{2pt}
+\begin{Verbatim}[breaklines]
+Aviso (línea 3, columna 5): la variable 'sinUso' recibe valores que nunca se leen
+Aviso (línea 4, columna 10): ninguna variable de la condición cambia en el cuerpo: si el bucle entra, no termina nunca
+Aviso (línea 7, columna 7): la condición del if es siempre falsa: el bloque nunca se ejecuta
+Aviso (línea 10, columna 10): la condición del while es siempre verdadera: el bucle no termina nunca
+Aviso (línea 12, columna 1): código inalcanzable: la sentencia anterior no termina nunca
+\end{Verbatim}
+\caption{Programa con los cuatro tipos de aviso (arriba) y los avisos del compilador (abajo).}
+\label{fig:avisos}
+\end{figure}
+
+En la sección~\ref{sec:indecidibilidad} se explica por qué estos avisos no
+pueden detectar todos los bucles infinitos.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 4: representación intermedia}
+
+El compilador traduce el AST a código de tres direcciones (\tm{lcero/ir.py}).
+Los operandos son variables, temporales (\tm{\$t1}, \tm{\$t2}, \dots) o
+constantes, y en esta etapa no hay límite de registros. La
+tabla~\ref{tab:ri} resume las instrucciones.
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|L{5.4cm}|L{8.5cm}|}
+\hline
+\thead{Instrucción} & \thead{Significado} \\ \hline
+\tm{x = a op b} & Operación binaria (aritmética o relacional) \\ \hline
+\tm{x = -a}, \tm{x = a} & Menos unario y copia \\ \hline
+\tm{L:}, \tm{goto L}, \tm{ifz a goto L} & Etiqueta, salto y salto si $a = 0$ \\ \hline
+\tm{print a}, \tm{halt} & Salida y fin del programa \\ \hline
+\tm{x = load [n]}, \tm{store [n] = a} & Lectura y escritura de la cinta (solo las agrega el optimizador) \\ \hline
+\end{tabular}
+\end{grilla}
+\caption{Instrucciones de la representación intermedia.}
+\label{tab:ri}
+\end{table}
+
+Un \tm{while} se traduce como \tm{L1:} condición; \tm{ifz t goto L2};
+cuerpo; \tm{goto L1}; \tm{L2:}, y un \tm{if} de forma similar. Durante la
+generación se pliegan las constantes (\tm{2 * (3 + 4)} se traduce como
+\tm{14}). La figura~\ref{fig:ri} muestra el resultado para el factorial.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{0.42\textwidth}
+\VerbatimInput[firstline=3]{../../tests/programas/validos/factorial.l0}
+\end{minipage}\hspace{1cm}
+\begin{minipage}[t]{0.42\textwidth}
+\VerbatimInput{generado/factorial_ri.txt}
+\end{minipage}
+\caption{Programa del factorial (izquierda) y su RI (derecha).}
+\label{fig:ri}
+\end{figure}
+
+Esta RI todavía usa nombres ilimitados. El optimizador de la
+sección~\ref{sec:registros} le asigna los registros de la máquina, y eso es
+lo que finalmente se ejecuta.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 5: máquina virtual}
+\label{sec:maquina}
+
+La máquina (\tm{lcero/vm.py}) es una máquina de registros con una cinta,
+modelada con los mismos elementos que una máquina de Turing.
+
+\begin{definicion}[Máquina de L-Cero]
+Para un programa de $m$ instrucciones y $k \ge 2$ registros, la máquina es
+$\mathcal{M} = (Q, k, \Gamma, \delta, q_0, q_f)$, donde
+$Q = \{q_0, \dots, q_{m-1}, q_f\}$ tiene un estado por instrucción más el
+estado de parada; hay $k$ registros $R_0, \dots, R_{k-1}$ con enteros sin
+cota; la cinta tiene celdas numeradas $0, 1, 2, \dots$ con símbolos de
+$\Gamma = \mathbb{Z}$ (el blanco es 0) y un cabezal que se mueve de a una
+celda; y $\delta$ es la función de transición de la tabla~\ref{tab:delta-vm}.
+Una configuración es $C = (q, \rho, h, \tau, \omega)$: estado, contenido de
+los registros, posición del cabezal, contenido de la cinta y valores
+impresos hasta el momento.
+\end{definicion}
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|L{4.2cm}|L{9.7cm}|}
+\hline
+\thead{Instrucción en $q$} & \thead{Nueva configuración} \\ \hline
+\tm{mov Rd, A} & $(q{+}1,\ \rho[d \mapsto A],\ h,\ \tau,\ \omega)$ \\ \hline
+\tm{add/sub/mul/\dots{} Rd, A, B} & $(q{+}1,\ \rho[d \mapsto A \mathbin{op} B],\ h,\ \tau,\ \omega)$; error si se divide por 0 \\ \hline
+\tm{load Rd, [a]} & si $h < a$: $h{+}1$; si $h > a$: $h{-}1$; si $h = a$: $(q{+}1,\ \rho[d \mapsto \tau(h)],\ h,\ \tau,\ \omega)$ \\ \hline
+\tm{store [a], A} & mueve el cabezal igual que \tm{load}; si $h = a$: $(q{+}1,\ \rho,\ h,\ \tau[h \mapsto A],\ \omega)$ \\ \hline
+\tm{jmp q'} / \tm{jz A, q'} & pasa a $q'$ (en \tm{jz}, solo si $A = 0$; si no, a $q{+}1$) \\ \hline
+\tm{print A} & $(q{+}1,\ \rho,\ h,\ \tau,\ \omega \cdot A)$ \\ \hline
+\tm{halt} & pasa a $q_f$ \\ \hline
+\end{tabular}
+\end{grilla}
+\caption{Función de transición de la máquina ($A$ y $B$ son registros o constantes).}
+\label{tab:delta-vm}
+\end{table}
+
+Igual que en una MT, para leer o escribir la celda $a$ el cabezal tiene que
+llegar hasta ella moviéndose una celda por paso. En la clase \tm{Machine},
+el método \tm{delta} aplica exactamente un paso de la tabla y \tm{run} lo
+repite hasta llegar a $q_f$ (o hasta un límite de pasos). Por ejemplo, el
+programa \tm{int a = 7; int b = 5; int c = 2; print(a * b - c); \dots} con
+solo 2 registros obliga a guardar las variables en la cinta, y en la traza
+de la figura~\ref{fig:traza-vm} se ve el movimiento del cabezal.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}[t]{0.33\textwidth}
+\VerbatimInput[fontsize=\scriptsize,lastline=12]{generado/traza_maquina.txt}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.63\textwidth}
+\VerbatimInput[fontsize=\scriptsize,lastline=12]{generado/traza_configuraciones.txt}
+\end{minipage}
+\caption{Programa de la máquina (izquierda) y primeras configuraciones de la ejecución (derecha).}
+\label{fig:traza-vm}
+\end{figure}
+
+\paragraph{Turing-completitud}
+
+\begin{teorema}
+La máquina de L-Cero es Turing-completa para cualquier $k \ge 2$.
+\end{teorema}
+
+\begin{proof}
+Minsky demostró que las máquinas de dos contadores son Turing-completas.
+Esas máquinas tienen dos registros naturales y tres instrucciones:
+$\mathrm{INC}(r, j)$, que suma 1 a $r$ y salta a $j$;
+$\mathrm{DEC}(r, j, \ell)$, que salta a $\ell$ si $r = 0$ y, si no, le resta
+1 y salta a $j$; y $\mathrm{HALT}$. Cada una se traduce a la máquina de
+L-Cero con a lo sumo tres instrucciones: \tm{add Rr, Rr, 1; jmp} para INC,
+\tm{jz Rr; sub Rr, Rr, 1; jmp} para DEC y \tm{halt}. Como los registros no
+tienen cota, la simulación es exacta paso a paso, así que la máquina puede
+simular cualquier máquina de dos contadores y, por lo tanto, cualquier MT.
+\end{proof}
+
+Para la Fase~6 hace falta algo más fuerte: que el propio lenguaje L-Cero
+pueda simular cualquier MT. En \tm{lcero/turing.py} se implementó una
+función $f$ que, dada una MT $M$ y una entrada $w$, genera un programa
+L-Cero que la simula. La cinta de $M$ se guarda en tres variables: \tm{cur}
+(el símbolo bajo el cabezal), \tm{izq} y \tm{der} (lo que hay a cada lado,
+escrito como un número en base $b = |\Gamma|$, con la celda más cercana al
+cabezal como dígito menos significativo). Mover el cabezal a la derecha es
+\tm{izq = izq * b + cur; cur = der \% b; der = der / b}, y a la izquierda es
+lo simétrico. El programa es un \tm{while (estado != H)} con un \tm{if} por
+cada estado y cada símbolo (un ejemplo generado es \tm{maquina\_turing.l0},
+en las pruebas). Por inducción en la cantidad de pasos se ve que, después
+de $t$ vueltas del bucle, las variables representan la configuración de $M$
+después de $t$ pasos; por lo tanto, \textbf{el programa termina si y solo si
+$M$ se detiene con $w$}. Esto se probó con los castores afanosos de 2 y 3
+estados (que dan 4 unos en 6 pasos y 6 unos en 14 pasos, igual que la MT) y
+con 60 máquinas al azar.
+
+Todo esto depende de que los enteros no tengan cota. Con enteros de 32 bits
+la máquina tendría una cantidad finita de configuraciones, sería en el fondo
+un autómata finito y se podría decidir si termina.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 6: indecidibilidad de la terminación}
+\label{sec:indecidibilidad}
+
+La consigna de esta fase es: \emph{«Demuestre formalmente que es imposible
+construir un algoritmo estático global capaz de determinar si cualquier
+programa dado escrito en L-Cero detendrá su ejecución en la Máquina Virtual
+sin caer en un bucle infinito»}.
+
+Sean $\HALT_{MT} = \{\langle M, w\rangle : M$ se detiene con entrada $w\}$
+y $\HALT_{L0} = \{P : P$ es un programa L-Cero válido cuya ejecución en la
+máquina termina$\}$. Un algoritmo como el de la consigna sería un decisor
+para $\HALT_{L0}$.
+
+\begin{teorema}
+$\HALT_{L0}$ es indecidible.
+\end{teorema}
+
+\begin{proof}
+Se reduce el problema de la parada, que Turing probó indecidible, a
+$\HALT_{L0}$, usando la función $f$ de la sección anterior:
+
+\begin{itemize}
+  \item $f$ es computable y total: para cualquier $\langle M, w\rangle$
+  escribe un programa con un bloque por cada par (estado, símbolo) de $M$ y
+  codifica $w$ como un número. Es un procedimiento mecánico que siempre
+  termina (la función \tm{to\_lcero}).
+  \item $f(\langle M, w\rangle)$ es un programa L-Cero válido: declara todas
+  sus variables inicializadas y no puede dar errores de ejecución, porque
+  solo divide por la constante $b \ge 1$.
+  \item $\langle M, w\rangle \in \HALT_{MT} \iff f(\langle M, w\rangle) \in \HALT_{L0}$,
+  porque el programa termina si y solo si $M$ se detiene con $w$.
+\end{itemize}
+
+Supóngase que existe un algoritmo $D$ que decide $\HALT_{L0}$. Entonces,
+para decidir si $M$ se detiene con $w$ alcanzaría con calcular
+$f(\langle M, w\rangle)$ y preguntarle a $D$. Eso decidiría el problema de
+la parada, lo cual es imposible. Por lo tanto $D$ no existe: no hay ningún
+algoritmo, estático ni de otro tipo, que decida para todo programa L-Cero si
+su ejecución termina.
+\end{proof}
+
+Con la misma idea se prueba que tampoco se puede decidir si un programa
+imprime algo (basta agregar un \tm{print} al final de
+$f(\langle M, w\rangle)$); en general, es el teorema de Rice. Lo que sí se
+puede es \emph{semidecidir} la terminación: si al ejecutar el programa este
+termina, se sabe, pero si no termina nunca se tiene certeza. Por eso
+\tm{Machine.run} acepta un límite de pasos, y en las pruebas de bucles
+infinitos solo se puede verificar que no terminaron en 200\,000 pasos.
+
+El teorema también explica el alcance de los avisos de la Fase~3. Los avisos
+sobre bucles que no terminan son seguros pero no completos: si el compilador
+avisa que un bucle no termina, es cierto (en el caso de la condición
+invariante, siempre que el bucle llegue a entrar), pero no detecta todos los
+bucles infinitos. De los cinco programas de \tm{tests/programas/bucle\_infinito}
+solo avisa en \tm{condicion\_constante.l0}. Por ejemplo, en
+\tm{olvido\_de\_incremento.l0} el contador \tm{i} solo se incrementa dentro
+de un \tm{if} cuya condición nunca se cumple; como la variable sí se asigna en
+el cuerpo del bucle, el análisis no puede descartar que el bucle termine y no
+da ningún aviso. Un análisis que detectara todos los casos decidiría
+$\HALT_{L0}$, lo cual es imposible.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 7: análisis asintótico y profiling}
+
+Se llama $n$ al largo de la entrada en caracteres, $t$ a la cantidad de
+tokens, $N$ a la cantidad de instrucciones de la RI, $V$ a la cantidad de
+variables y temporales, $E$ a las aristas del grafo de interferencia y $L$
+a la máxima cantidad de variables vivas al mismo tiempo. La
+tabla~\ref{tab:complejidad} resume la complejidad de cada componente.
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|L{3.1cm}|L{3.1cm}|L{2.1cm}|L{2.6cm}|L{2.3cm}|}
+\hline
+\thead{Componente} & \thead{$O$} & \thead{$\Omega$} & \thead{$\Theta$} & \thead{Espacio} \\ \hline
+Lexer & $O(n)$ & $\Omega(n)$ & $\Theta(n)$ & $\Theta(n)$ \\ \hline
+Parser & $O(t)$ & $\Omega(t)$ & $\Theta(t)$ & $\Theta(t)$ \\ \hline
+Optimizador (caso general) & $O(N V L + (V{+}E)\log V)$ por ronda & $\Omega(N + V)$ & Depende del programa & $\Theta(N L + V + E)$ \\ \hline
+Optimizador, pocas variables vivas & $O(N \log N)$ & $\Omega(N)$ & Lineal en la práctica & $\Theta(N)$ \\ \hline
+Optimizador, todas vivas ($K_m$) & $O(N^2 \log N)$ & $\Omega(N^2)$ & Domina $N^2$ & $\Theta(N^2)$ \\ \hline
+\end{tabular}
+\end{grilla}
+\caption{Complejidad temporal y espacial de cada componente.}
+\label{tab:complejidad}
+\end{table}
+
+\paragraph{Lexer}
+
+En general, el máximo bocado puede tener que retroceder varios caracteres.
+En este AFD eso no ocurre: los únicos estados no finales son $q_0$,
+$q_{13}$ (el \tm{!}) y el sumidero, y a $q_{13}$ solo se llega desde $q_0$.
+Entonces, una vez que se pasa por un estado final, todos los siguientes
+también son finales hasta caer en el sumidero, y lo único que se vuelve a
+leer es el carácter que provocó la caída. Cada carácter se lee a lo sumo dos
+veces, así que el tiempo es $O(n)$, y como hay que leerlos todos también es
+$\Omega(n)$.
+
+\paragraph{Parser}
+
+El autómata hace un paso por cada nodo del árbol de derivación. La gramática
+no tiene ciclos ($A \Rightarrow^{+} A$) y cada producción tiene a lo sumo un
+símbolo anulable acompañado de otro que no lo es, así que el árbol tiene
+$O(t)$ nodos. Cada token se consume una sola vez, lo que da $\Theta(t)$. En
+las mediciones se obtuvieron \PasosPorToken{} pasos por token en promedio.
+
+\paragraph{Optimizador}
+
+El análisis de vivacidad visita cada instrucción pocas veces (se midieron
+alrededor de $1.3\,N$ visitas) con conjuntos de a lo sumo $L$ variables;
+armar el grafo cuesta $O(N \cdot L)$; y colorearlo con el montículo de
+candidatos cuesta $O((V+E)\log V)$. Si hay pocas variables vivas a la vez,
+el grafo tiene $O(N)$ aristas y todo es casi lineal. En el peor caso, si
+$m$ variables están vivas al mismo tiempo, el grafo es completo y tiene
+$m(m-1)/2$ aristas, por lo que el costo es al menos cuadrático.
+
+\paragraph{Profiling}
+
+Para contrastar con la teoría se generaron programas L-Cero válidos de
+distintos tamaños (\tm{scripts/profiling.py}) y se midió el tiempo de cada
+fase (mediana de 5 ejecuciones). Se usaron programas típicos de hasta
+\ProfMaxTokens{} tokens y, para el peor caso del optimizador, programas con
+todas las variables vivas a la vez. La figura~\ref{fig:profiling} muestra
+las mediciones junto con la curva teórica ajustada, y la
+tabla~\ref{tab:pendientes} la pendiente en escala log-log, que estima el
+exponente (1 es lineal y 2 es cuadrático).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{generado/profiling_fases.pdf}
+\caption{Tiempo medido (puntos) contra el modelo teórico (línea).}
+\label{fig:profiling}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\thead{Serie} & \thead{Modelo} & \thead{Pendiente log-log} & \thead{$R^2$} \\ \hline
+Lexer & $c \cdot n$ & \PendLexer & \RdosLexer \\ \hline
+Parser & $c \cdot t$ & \PendParser & \RdosParser \\ \hline
+Optimizador, programas típicos & $c \cdot N$ & \PendOptTipico & \RdosOptTipico \\ \hline
+Optimizador, peor caso & $c \cdot N^2$ & \PendOptPeor & \RdosOptPeor \\ \hline
+\end{tabular}
+\end{grilla}
+\caption{Ajuste de las mediciones al modelo teórico.}
+\label{tab:pendientes}
+\end{table}
+
+El lexer y el parser dan prácticamente 1, como se esperaba. En el
+optimizador con programas típicos la pendiente es \PendOptTipico: si en
+lugar del tiempo se cuentan las operaciones (visitas, nodos y aristas), da
+\PendOptTrabajo, así que el algoritmo es lineal y la diferencia se debe a
+que el tiempo por operación crece un poco con el tamaño (efecto de la
+memoria en Python). En el peor caso da \PendOptPeor, cerca de 2.
+
+El profiling también permitió encontrar un error. En la primera versión del
+optimizador, cada vez que había que elegir una variable para mandar a
+memoria se recorrían todos los nodos buscando la más barata. Se había
+considerado un costo menor, pero en programas largos se eligen muchas
+variables y el algoritmo resultaba cuadrático: pendiente \OptVUnoPend{} y
+\OptVUnoMax{} segundos para el programa más grande. Al reemplazar esa
+búsqueda por un montículo el tiempo bajó a \OptVDosMax{} segundos, con
+exactamente las mismas decisiones.
+
+% -----------------------------------------------------------------------------
+\subsection{Fase 8: asignación de registros}
+\label{sec:registros}
+
+La RI usa infinitos nombres, pero la máquina tiene $k$ registros. Una
+variable está \emph{viva} en un punto si su valor actual se va a usar más
+adelante. Dos variables \emph{interfieren} si una se define en un punto
+donde la otra está viva; en ese caso no pueden compartir registro. Con esa
+relación se arma el \emph{grafo de interferencia} $G(P)$, y asignar
+registros sin mandar nada a memoria equivale a colorear $G(P)$ con $k$
+colores.
+
+\begin{teorema}
+Para $k \ge 3$, decidir si las variables de un programa entran en $k$
+registros (sin mandar ninguna a memoria) es NP-completo.
+\end{teorema}
+
+\begin{proof}
+\emph{Pertenece a NP}: dada una asignación de registros, se calcula $G(P)$
+en tiempo polinomial y se verifica que ninguna arista una dos variables con
+el mismo registro.
+
+\emph{Es NP-difícil}: se reduce $k$-coloreo, que es NP-completo para
+$k \ge 3$ (Karp). Dado un grafo $G$, se genera el programa $P_G$
+(\tm{lcero/reductions.py}), que tiene una variable \tm{v}$_i$ por vértice y
+un \tm{if} por cada arista:
+
+\begin{Verbatim}
+int sel = 0;
+int v0; int v1; ...
+if (sel == 0) {        // arista {u, w}
+    vu = 1;
+    vw = 2;
+    print(vu + vw);
+} else if (sel == 1) { ...
+\end{Verbatim}
+
+En la rama de la arista $\{u, w\}$, cuando se asigna \tm{vw} la variable
+\tm{vu} está viva (se usa en la suma), así que interfieren. Fuera de esa
+rama ninguna de las dos está viva, porque cada rama las vuelve a asignar
+antes de usarlas. Por lo tanto, entre las variables \tm{v}$_i$ el grafo de
+interferencia es exactamente $G$. Las demás variables (\tm{sel} y los
+temporales) no tocan a las \tm{v}$_i$ y forman un grafo que se colorea con
+2 colores, así que para $k \ge 3$, $G$ se puede colorear con $k$ colores si
+y solo si $P_G$ entra en $k$ registros. Como $P_G$ tiene un tamaño lineal en
+el de $G$, la reducción es polinomial.
+\end{proof}
+
+Las pruebas verifican que el grafo de interferencia de $P_G$ es exactamente
+$G$ para varios grafos conocidos (ciclos, grafos completos y el grafo de
+Petersen) y para 30 grafos al azar.
+
+\paragraph{Heurística de Chaitin}
+
+Como el problema es NP-completo, el módulo \tm{lcero/regalloc.py} usa la
+heurística de Chaitin:
+
+\begin{enumerate}
+  \item Calcular la vivacidad y armar el grafo de interferencia.
+  \item \textbf{Simplificar}: mientras haya un nodo con menos de $k$
+  vecinos, sacarlo del grafo y apilarlo. Ese nodo siempre se va a poder
+  colorear, porque sus vecinos usan a lo sumo $k-1$ colores.
+  \item Si todos los nodos restantes tienen $k$ o más vecinos,
+  \textbf{elegir uno para mandar a memoria} (el de menor costo/grado, donde
+  el costo cuenta sus usos y pesa 10 veces más por cada nivel de
+  \tm{while}) y sacarlo.
+  \item \textbf{Seleccionar}: desapilar y darle a cada nodo el primer color
+  que no usen sus vecinos.
+  \item Si se mandó algo a memoria, agregar un \tm{load} antes de cada uso y
+  un \tm{store} después de cada definición, y volver al paso 1.
+\end{enumerate}
+
+\paragraph{Por qué una heurística y no una búsqueda exhaustiva}
+
+Buscar un coloreo exacto puede requerir probar hasta $k^{V}$ asignaciones.
+Se comparó Chaitin con una implementación exacta por backtracking sobre
+grafos al azar (figura~\ref{fig:coloreo}): el tiempo del método exacto crece
+como $\ColoreoBase^{V}$ (se duplica cada \ColoreoDuplica{} vértices),
+mientras que Chaitin tarda décimas de milisegundo. La desventaja es que a
+veces manda a memoria variables sin necesidad: el grafo de Petersen se puede
+colorear con 3 colores, pero todos sus vértices tienen grado 3, así que con
+$k = 3$ Chaitin no puede simplificar ninguno y manda uno a memoria.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{generado/coloreo_exacto.pdf}
+\caption{Coloreo exacto (backtracking) contra la heurística de Chaitin en grafos al azar.}
+\label{fig:coloreo}
+\end{figure}
+
+La tabla~\ref{tab:registros} muestra los resultados sobre los programas de
+prueba. Por ejemplo, en \tm{fibonacci} hay cuatro variables vivas a la vez
+(\tm{a}, \tm{b}, \tm{i} y \tm{t}), así que con 3 registros no entran todas
+y Chaitin manda dos a memoria (\tm{\FibSlots}).
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{} & \multicolumn{3}{c|}{\textbf{Variables a memoria (rondas)}} \\ \cline{6-8}
+\thead{Programa} & \thead{$N$} & \thead{$V$} & \thead{$E$} & \thead{Grado\\máximo} & \thead{$k=2$} & \thead{$k=3$} & \thead{$k=4$} \\ \hline
+\tabla{generado/f8_resultados_grid.tex}
+\end{tabular}
+\end{grilla}
+\caption{Asignación de registros en los programas de prueba ($N$, $V$, $E$ y grado de la primera ronda).}
+\label{tab:registros}
+\end{table}
+
+% =============================================================================
+\section{Pruebas automatizadas}
+
+El proyecto tiene \NTests{} pruebas automáticas (\tm{python -m pytest}). La
+base son \NProgramas{} programas L-Cero en \tm{tests/programas/}, cada uno
+con lo que se espera de él indicado en la primera línea
+(\tm{// SALIDA: \dots}, \tm{// ERROR: fase línea:columna} o \tm{// BUCLE}).
+La tabla~\ref{tab:pruebas} resume las categorías.
+
+\begin{table}[H]
+\centering
+\begin{grilla}
+\begin{tabular}{|L{2.9cm}|C{1.9cm}|L{8.9cm}|}
+\hline
+\thead{Categoría} & \thead{Programas} & \thead{Qué se verifica} \\ \hline
+Válidos & \NProgValidos & La salida exacta, con 2, 3, 4 y 8 registros (factorial, Fibonacci, MCD, primos, Collatz, una MT, etc.). \\ \hline
+Error léxico & \NProgErrorlexico & Que falle el lexer en la línea y columna indicadas (\tm{@}, \tm{ñ}, comillas, \tm{\&\&}, \tm{!}). \\ \hline
+Error sintáctico & \NProgErrorsintactico & Que falle el parser donde corresponde (falta \tm{;}, llave sin cerrar, \tm{else} sin \tm{if}, etc.). \\ \hline
+Error semántico & \NProgErrorsemantico & Doble declaración, variable sin declarar, sin inicializar o fuera de ámbito. \\ \hline
+Bucles infinitos & \NProgBucleinfinito & Que compilen y no terminen en 200\,000 pasos. \\ \hline
+\end{tabular}
+\end{grilla}
+\caption{Categorías de programas de prueba.}
+\label{tab:pruebas}
+\end{table}
+
+Además hay pruebas de cada parte por separado: los First y Follow contra los
+valores calculados a mano, la minimalidad del AFD, cada regla semántica, la
+recuperación de errores del parser y del análisis semántico, los avisos del
+compilador, la función de transición de la máquina, las dos reducciones y la
+validez de la asignación de registros. El compilador se usa desde la línea
+de comandos:
+
+\begin{Verbatim}
+python -m lcero ejecutar programa.l0 -k 4     # compila y ejecuta con 4 registros
+python -m lcero avisos programa.l0            # solo los avisos del compilador
+python -m lcero tokens programa.l0            # también: ast, ri, maquina, traza
+python -m lcero registros programa.l0 -k 3    # grafo de interferencia y asignación
+python -m lcero afd                           # matriz del AFD (también: gramatica)
+\end{Verbatim}
+
+\textbf{Repositorio:} \Repositorio
+
+% =============================================================================
+\section{Conclusiones}
+
+El trabajo permitió ver cómo cada parte del compilador corresponde a un tema
+de la materia. Los tokens son lenguajes regulares y alcanza con un AFD; la
+sintaxis necesita una gramática libre de contexto y un autómata de pila; los
+controles sobre las variables ya no son libres de contexto y requieren algo
+equivalente a un autómata linealmente acotado; y la ejecución es
+Turing-completa, lo que hace imposible decidir en general si un programa
+termina.
+
+En la parte de complejidad, la asignación de registros mostró por qué en la
+práctica se usan heurísticas: el problema exacto es NP-completo y la
+búsqueda exhaustiva crece exponencialmente, mientras que Chaitin es casi
+lineal, aunque no siempre encuentre la mejor solución. Por último, el
+profiling permitió detectar un costo cuadrático que en el análisis teórico
+inicial había pasado inadvertido.
+
+% =============================================================================
+\section{Referencias}
+
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em, itemsep=3pt]
+\item A. Aho, M. Lam, R. Sethi y J. Ullman. \emph{Compiladores: principios, técnicas y herramientas}, 2.ª ed. Pearson, 2008.
+\item J. Hopcroft, R. Motwani y J. Ullman. \emph{Introducción a la teoría de autómatas, lenguajes y computación}, 3.ª ed. Pearson, 2007.
+\item M. Sipser. \emph{Introduction to the Theory of Computation}, 3.ª ed. Cengage, 2013.
+\item G. Chaitin et al. Register allocation via coloring. \emph{Computer Languages}, 6(1):47--57, 1981.
+\item J. Hopcroft. An $n \log n$ algorithm for minimizing states in a finite automaton. En \emph{Theory of Machines and Computations}, Academic Press, 1971.
+\item R. Karp. Reducibility among combinatorial problems. En \emph{Complexity of Computer Computations}, Plenum, 1972.
+\item M. Minsky. \emph{Computation: Finite and Infinite Machines}. Prentice-Hall, 1967.
+\item K. Thompson. Regular expression search algorithm. \emph{Communications of the ACM}, 11(6):419--422, 1968.
+\item A. Turing. On computable numbers, with an application to the Entscheidungsproblem. \emph{Proc. London Math. Society}, 42:230--265, 1936.
+\end{enumerate}
+
+% =============================================================================
+\newpage
+\section*{Anexo A. AFD mínimo completo}
+\addcontentsline{toc}{section}{Anexo A. AFD mínimo completo}
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.74\textheight]{generado/afd_simbolos.pdf}
+\caption{Parte del AFD mínimo que reconoce operadores, delimitadores, comentarios y espacios.}
+\end{figure}
+
+\newpage
+La matriz de transición $\delta$ tiene \NMin{} estados y \NClases{}
+columnas. $\rightarrow$ indica el estado inicial, $\ast$ los estados finales
+y $\cdot$ una transición al sumidero $q_\emptyset$. Columnas:
+\tm{e f h i l n p r s t w}, una por cada letra que aparece en una palabra
+reservada; \tm{L}, el resto de las letras y el \tm{\_}; \tm{D}, los dígitos;
+un símbolo por columna; \tm{esp}, espacio, tabulación y
+\tm{\textbackslash r}; \tm{\textbackslash n}; y \tm{otro}, cualquier otro
+carácter (solo válido dentro de un comentario).
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\renewcommand{\arraystretch}{1.12}
+\input{generado/f1_delta.tex}
+\endgroup
+
+\newpage
+\section*{Anexo B. Cálculo de First y Follow}
+\addcontentsline{toc}{section}{Anexo B. Cálculo de First y Follow}
+
+\begingroup\footnotesize\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{|l|l|l|}
+\caption{First: aporte de cada producción.}\\
+\hline
+\thead{$A$} & \thead{Producción} & \thead{$\First$ del lado derecho} \\ \hline
+\endfirsthead
+\hline
+\thead{$A$} & \thead{Producción} & \thead{$\First$ del lado derecho} \\ \hline
+\endhead
+\tabla{generado/f2_first_calculo.tex}
+\hline
+\end{longtable}
+\endgroup
+
+\begingroup\footnotesize\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{|l|l|p{6.3cm}|}
+\caption{Follow: reglas aplicadas (entre paréntesis, la producción donde aparece cada caso).}\\
+\hline
+\thead{$B$} & \thead{Regla} & \thead{Aporte} \\ \hline
+\endfirsthead
+\hline
+\thead{$B$} & \thead{Regla} & \thead{Aporte} \\ \hline
+\endhead
+\tabla{generado/f2_follow_calculo.tex}
+\hline
+\end{longtable}
+\endgroup
+
+\section*{Anexo C. Tabla LL(1)}
+\addcontentsline{toc}{section}{Anexo C. Tabla LL(1)}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.3pt}
+\input{generado/f2_tabla_ll1.tex}
+\caption{Tabla $M[A, a]$: número de la producción que se aplica con $A$ en el tope y $a$ como próximo token. Las celdas vacías son errores.}
+\end{table}
+
+\end{document}

@@ -1,0 +1,30 @@
+graph P {
+  layout=neato;
+  node [shape=circle, style=filled, fontname="Helvetica", fontsize=11, fontcolor=white, width=0.45, fixedsize=true, color=white, penwidth=2];
+  edge [color="#52514e", penwidth=1.3];
+  v0 [label="v0", pos="0.000,2.000!", fillcolor="#2a78d6"];
+  v1 [label="v1", pos="-1.902,0.618!", fillcolor="#eb6834"];
+  v2 [label="v2", pos="-1.176,-1.618!", fillcolor="#2a78d6"];
+  v3 [label="v3", pos="1.176,-1.618!", fillcolor="#eb6834"];
+  v4 [label="v4", pos="1.902,0.618!", fillcolor="#1baf7a"];
+  v5 [label="v5", pos="0.000,1.000!", fillcolor="#eb6834"];
+  v6 [label="v6", pos="-0.951,0.309!", fillcolor="#2a78d6"];
+  v7 [label="v7", pos="-0.588,-0.809!", fillcolor="#1baf7a"];
+  v8 [label="v8", pos="0.588,-0.809!", fillcolor="#1baf7a"];
+  v9 [label="v9", pos="0.951,0.309!", fillcolor="#eb6834"];
+  v0 -- v1;
+  v1 -- v2;
+  v2 -- v3;
+  v3 -- v4;
+  v4 -- v0;
+  v0 -- v5;
+  v1 -- v6;
+  v2 -- v7;
+  v3 -- v8;
+  v4 -- v9;
+  v5 -- v7;
+  v6 -- v8;
+  v7 -- v9;
+  v8 -- v5;
+  v9 -- v6;
+}

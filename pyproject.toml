@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lcero"
+version = "0.1.0"
+description = "Compilador y máquina virtual abstracta para el lenguaje L-Cero (TPI)"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "matplotlib>=3.7"]
+
+[project.scripts]
+lcero = "lcero.__main__:main"
+
+[tool.setuptools]
+packages = ["lcero"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "tests"]

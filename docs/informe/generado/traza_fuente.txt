@@ -1,0 +1,5 @@
+int a = 7;
+int b = 5;
+int c = 2;
+print(a * b - c);
+print(a + b + c);

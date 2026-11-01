@@ -1,0 +1,25 @@
+graph G {
+  layout=neato; overlap=false; sep="+18"; splines=true;
+  node [shape=circle, style=filled, fontname="Helvetica", fontsize=15, fontcolor=white, width=0.75, fixedsize=true, color=white, penwidth=2];
+  edge [color="#9a9893", penwidth=1.4];
+  n0 [label="s1\nR0", fillcolor="#2a78d6"];
+  n1 [label="b\nR2", fillcolor="#1baf7a"];
+  n2 [label="i\nR1", fillcolor="#eb6834"];
+  n3 [label="t1\nR0", fillcolor="#2a78d6"];
+  n4 [label="s2\nR0", fillcolor="#2a78d6"];
+  n5 [label="s3\nR0", fillcolor="#2a78d6"];
+  n6 [label="s4\nR0", fillcolor="#2a78d6"];
+  n7 [label="s5\nR0", fillcolor="#2a78d6"];
+  n8 [label="s6\nR0", fillcolor="#2a78d6"];
+  n1 -- n2;
+  n1 -- n3;
+  n1 -- n4;
+  n1 -- n5;
+  n1 -- n6;
+  n2 -- n3;
+  n2 -- n4;
+  n2 -- n5;
+  n2 -- n6;
+  n2 -- n7;
+  n2 -- n8;
+}

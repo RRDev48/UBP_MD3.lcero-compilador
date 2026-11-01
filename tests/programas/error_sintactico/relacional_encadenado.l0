@@ -1,0 +1,2 @@
+// ERROR: sintáctico 2:15
+int x = 1 < 2 < 3;

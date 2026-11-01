@@ -1,0 +1,4 @@
+// ERROR: sintáctico 3:1
+// "/*" es léxicamente válido (SLASH STAR), pero ningún programa empieza con "/"
+/* comentario de bloque */
+int x = 1;

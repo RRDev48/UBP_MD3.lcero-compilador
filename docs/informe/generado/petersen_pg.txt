@@ -1,0 +1,73 @@
+// P_G para un grafo con 10 vértices y 15 aristas
+int sel = 0;
+int v0;
+int v1;
+int v2;
+int v3;
+int v4;
+int v5;
+int v6;
+int v7;
+int v8;
+int v9;
+if (sel == 0) {
+    v0 = 1;
+    v1 = 2;
+    print(v0 + v1);
+} else if (sel == 1) {
+    v1 = 2;
+    v2 = 3;
+    print(v1 + v2);
+} else if (sel == 2) {
+    v2 = 3;
+    v3 = 4;
+    print(v2 + v3);
+} else if (sel == 3) {
+    v3 = 4;
+    v4 = 5;
+    print(v3 + v4);
+} else if (sel == 4) {
+    v4 = 5;
+    v0 = 6;
+    print(v4 + v0);
+} else if (sel == 5) {
+    v0 = 6;
+    v5 = 7;
+    print(v0 + v5);
+} else if (sel == 6) {
+    v1 = 7;
+    v6 = 8;
+    print(v1 + v6);
+} else if (sel == 7) {
+    v2 = 8;
+    v7 = 9;
+    print(v2 + v7);
+} else if (sel == 8) {
+    v3 = 9;
+    v8 = 10;
+    print(v3 + v8);
+} else if (sel == 9) {
+    v4 = 10;
+    v9 = 11;
+    print(v4 + v9);
+} else if (sel == 10) {
+    v5 = 11;
+    v7 = 12;
+    print(v5 + v7);
+} else if (sel == 11) {
+    v6 = 12;
+    v8 = 13;
+    print(v6 + v8);
+} else if (sel == 12) {
+    v7 = 13;
+    v9 = 14;
+    print(v7 + v9);
+} else if (sel == 13) {
+    v8 = 14;
+    v5 = 15;
+    print(v8 + v5);
+} else if (sel == 14) {
+    v9 = 15;
+    v6 = 16;
+    print(v9 + v6);
+}

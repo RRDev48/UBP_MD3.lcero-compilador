@@ -1,0 +1,10 @@
+// SALIDA: 14 20 -7 1 -2 -1 1 0
+// Precedencia, asociatividad, división truncada y relacionales como valores
+print(2 + 3 * 4);       // 14: * antes que +
+print((2 + 3) * 4);     // 20
+print(-(10 - 3));       // -7: menos unario
+print(17 / 3 % 4);      // 1: (17 / 3) % 4 = 5 % 4
+print(-7 / 3);          // -2: la división trunca hacia cero
+print(-7 % 3);          // -1: el resto toma el signo del dividendo
+print(3 < 5);           // 1: los relacionales valen 1 o 0
+print(10 - 4 - 6 != 0); // 0: (10 - 4) - 6 = 0, asociatividad a izquierda

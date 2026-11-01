@@ -1,0 +1,11 @@
+    n = 10
+    f = 1
+L1:
+    $t1 = n > 1
+    ifz $t1 goto L2
+    f = f * n
+    n = n - 1
+    goto L1
+L2:
+    print f
+    halt

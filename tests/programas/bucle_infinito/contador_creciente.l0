@@ -1,0 +1,6 @@
+// BUCLE
+// x nunca deja de ser no negativo
+int x = 0;
+while (x >= 0) {
+    x = x + 1;
+}

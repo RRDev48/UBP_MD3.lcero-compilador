@@ -1,0 +1,3 @@
+// ERROR: léxico 3:11
+int x = 5;
+int y = x @ 2;

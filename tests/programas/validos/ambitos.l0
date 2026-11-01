@@ -1,0 +1,18 @@
+// SALIDA: 3 30 7
+// Ámbitos de bloque y asignación definida por ambas ramas
+int base = 1;
+if (base > 0) {
+    int t = 3;
+    print(t);
+}
+if (base > 0) {
+    int t = 30;   // mismo nombre en un bloque hermano: es otra variable
+    print(t);
+}
+int x;
+if (base == 1) {
+    x = 7;
+} else {
+    x = 8;
+}
+print(x);         // válido: x se asigna en las dos ramas

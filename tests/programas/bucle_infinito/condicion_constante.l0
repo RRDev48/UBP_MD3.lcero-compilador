@@ -1,0 +1,4 @@
+// BUCLE
+// La condición nunca cambia
+while (1 == 1) {
+}

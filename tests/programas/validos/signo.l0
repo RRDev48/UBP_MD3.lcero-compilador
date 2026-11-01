@@ -1,0 +1,15 @@
+// SALIDA: -1 0 1
+// else-if encadenado, menos unario y declaración sin inicializar
+int k = -1;
+while (k <= 1) {
+    int s;
+    if (k < 0) {
+        s = -1;
+    } else if (k == 0) {
+        s = 0;
+    } else {
+        s = 1;
+    }
+    print(s);
+    k = k + 1;
+}

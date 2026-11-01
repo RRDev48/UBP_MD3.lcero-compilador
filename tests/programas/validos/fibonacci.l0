@@ -1,0 +1,12 @@
+// SALIDA: 0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+// Primeros 15 términos de Fibonacci
+int a = 0;
+int b = 1;
+int i = 0;
+while (i < 15) {
+    print(a);
+    int t = a + b;   // t vive solo dentro del bloque del while
+    a = b;
+    b = t;
+    i = i + 1;
+}

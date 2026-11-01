@@ -1,0 +1,62 @@
+\nt{Programa} & (1) \nt{ListaSent} & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, $\varepsilon$$\}$ \\
+\midrule
+\nt{ListaSent} & (2) \nt{Sent} \nt{ListaSent} & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}$\}$ \\
+ & (3) $\varepsilon$ & $\{$$\varepsilon$$\}$ \\
+\midrule
+\nt{Sent} & (4) \nt{Decl} & $\{$\tm{int}$\}$ \\
+ & (5) \nt{Asig} & $\{$\tm{id}$\}$ \\
+ & (6) \nt{Si} & $\{$\tm{if}$\}$ \\
+ & (7) \nt{Mientras} & $\{$\tm{while}$\}$ \\
+ & (8) \nt{Imprimir} & $\{$\tm{print}$\}$ \\
+ & (9) \nt{Bloque} & $\{$\tm{\{}$\}$ \\
+\midrule
+\nt{Decl} & (10) \tm{int} \tm{id} \nt{DeclInit} \tm{;} & $\{$\tm{int}$\}$ \\
+\midrule
+\nt{DeclInit} & (11) \tm{=} \nt{Expr} & $\{$\tm{=}$\}$ \\
+ & (12) $\varepsilon$ & $\{$$\varepsilon$$\}$ \\
+\midrule
+\nt{Asig} & (13) \tm{id} \tm{=} \nt{Expr} \tm{;} & $\{$\tm{id}$\}$ \\
+\midrule
+\nt{Si} & (14) \tm{if} \tm{(} \nt{Expr} \tm{)} \nt{Bloque} \nt{SiNo} & $\{$\tm{if}$\}$ \\
+\midrule
+\nt{SiNo} & (15) \tm{else} \nt{CuerpoSiNo} & $\{$\tm{else}$\}$ \\
+ & (16) $\varepsilon$ & $\{$$\varepsilon$$\}$ \\
+\midrule
+\nt{CuerpoSiNo} & (17) \nt{Bloque} & $\{$\tm{\{}$\}$ \\
+ & (18) \nt{Si} & $\{$\tm{if}$\}$ \\
+\midrule
+\nt{Mientras} & (19) \tm{while} \tm{(} \nt{Expr} \tm{)} \nt{Bloque} & $\{$\tm{while}$\}$ \\
+\midrule
+\nt{Imprimir} & (20) \tm{print} \tm{(} \nt{Expr} \tm{)} \tm{;} & $\{$\tm{print}$\}$ \\
+\midrule
+\nt{Bloque} & (21) \tm{\{} \nt{ListaSent} \tm{\}} & $\{$\tm{\{}$\}$ \\
+\midrule
+\nt{Expr} & (22) \nt{Arit} \nt{ExprRel} & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ \\
+\midrule
+\nt{ExprRel} & (23) \nt{OpRel} \nt{Arit} & $\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}$\}$ \\
+ & (24) $\varepsilon$ & $\{$$\varepsilon$$\}$ \\
+\midrule
+\nt{OpRel} & (25) \tm{==} & $\{$\tm{==}$\}$ \\
+ & (26) \tm{!=} & $\{$\tm{!=}$\}$ \\
+ & (27) \tm{<} & $\{$\tm{<}$\}$ \\
+ & (28) \tm{<=} & $\{$\tm{<=}$\}$ \\
+ & (29) \tm{>} & $\{$\tm{>}$\}$ \\
+ & (30) \tm{>=} & $\{$\tm{>=}$\}$ \\
+\midrule
+\nt{Arit} & (31) \nt{Term} \nt{AritCola} & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ \\
+\midrule
+\nt{AritCola} & (32) \tm{+} \nt{Term} \nt{AritCola} & $\{$\tm{+}$\}$ \\
+ & (33) \tm{-} \nt{Term} \nt{AritCola} & $\{$\tm{-}$\}$ \\
+ & (34) $\varepsilon$ & $\{$$\varepsilon$$\}$ \\
+\midrule
+\nt{Term} & (35) \nt{Factor} \nt{TermCola} & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ \\
+\midrule
+\nt{TermCola} & (36) \tm{*} \nt{Factor} \nt{TermCola} & $\{$\tm{*}$\}$ \\
+ & (37) \tm{/} \nt{Factor} \nt{TermCola} & $\{$\tm{/}$\}$ \\
+ & (38) \tm{\%} \nt{Factor} \nt{TermCola} & $\{$\tm{\%}$\}$ \\
+ & (39) $\varepsilon$ & $\{$$\varepsilon$$\}$ \\
+\midrule
+\nt{Factor} & (40) \tm{num} & $\{$\tm{num}$\}$ \\
+ & (41) \tm{id} & $\{$\tm{id}$\}$ \\
+ & (42) \tm{(} \nt{Expr} \tm{)} & $\{$\tm{(}$\}$ \\
+ & (43) \tm{-} \nt{Factor} & $\{$\tm{-}$\}$ \\

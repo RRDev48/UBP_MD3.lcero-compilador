@@ -1,0 +1,19 @@
+q0    mov   R0, 7
+q1    store [0], R0
+q2    mov   R0, 5
+q3    store [1], R0
+q4    mov   R0, 2
+q5    store [2], R0
+q6    load  R1, [0]
+q7    load  R0, [1]
+q8    mul   R1, R1, R0
+q9    load  R0, [2]
+q10   sub   R0, R1, R0
+q11   print R0
+q12   load  R1, [0]
+q13   load  R0, [1]
+q14   add   R1, R1, R0
+q15   load  R0, [2]
+q16   add   R0, R1, R0
+q17   print R0
+q18   halt

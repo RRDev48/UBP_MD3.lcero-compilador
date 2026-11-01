@@ -1,0 +1,13 @@
+q0    mov   R1, 10
+q1    mov   R0, 1
+q2    store [0], R0
+q3    gt    R0, R1, 1
+q4    jz    R0, q10
+q5    load  R0, [0]
+q6    mul   R0, R0, R1
+q7    store [0], R0
+q8    sub   R1, R1, 1
+q9    jmp   q3
+q10   load  R0, [0]
+q11   print R0
+q12   halt

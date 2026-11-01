@@ -1,0 +1,20 @@
+\nt{Programa} & $\rightarrow$ & \nt{ListaSent}\,{\scriptsize(1)} \\
+\nt{ListaSent} & $\rightarrow$ & \nt{Sent} \nt{ListaSent}\,{\scriptsize(2)} $\mid$ $\varepsilon$\,{\scriptsize(3)} \\
+\nt{Sent} & $\rightarrow$ & \nt{Decl}\,{\scriptsize(4)} $\mid$ \nt{Asig}\,{\scriptsize(5)} $\mid$ \nt{Si}\,{\scriptsize(6)} $\mid$ \nt{Mientras}\,{\scriptsize(7)} $\mid$ \nt{Imprimir}\,{\scriptsize(8)} $\mid$ \nt{Bloque}\,{\scriptsize(9)} \\
+\nt{Decl} & $\rightarrow$ & \tm{int} \tm{id} \nt{DeclInit} \tm{;}\,{\scriptsize(10)} \\
+\nt{DeclInit} & $\rightarrow$ & \tm{=} \nt{Expr}\,{\scriptsize(11)} $\mid$ $\varepsilon$\,{\scriptsize(12)} \\
+\nt{Asig} & $\rightarrow$ & \tm{id} \tm{=} \nt{Expr} \tm{;}\,{\scriptsize(13)} \\
+\nt{Si} & $\rightarrow$ & \tm{if} \tm{(} \nt{Expr} \tm{)} \nt{Bloque} \nt{SiNo}\,{\scriptsize(14)} \\
+\nt{SiNo} & $\rightarrow$ & \tm{else} \nt{CuerpoSiNo}\,{\scriptsize(15)} $\mid$ $\varepsilon$\,{\scriptsize(16)} \\
+\nt{CuerpoSiNo} & $\rightarrow$ & \nt{Bloque}\,{\scriptsize(17)} $\mid$ \nt{Si}\,{\scriptsize(18)} \\
+\nt{Mientras} & $\rightarrow$ & \tm{while} \tm{(} \nt{Expr} \tm{)} \nt{Bloque}\,{\scriptsize(19)} \\
+\nt{Imprimir} & $\rightarrow$ & \tm{print} \tm{(} \nt{Expr} \tm{)} \tm{;}\,{\scriptsize(20)} \\
+\nt{Bloque} & $\rightarrow$ & \tm{\{} \nt{ListaSent} \tm{\}}\,{\scriptsize(21)} \\
+\nt{Expr} & $\rightarrow$ & \nt{Arit} \nt{ExprRel}\,{\scriptsize(22)} \\
+\nt{ExprRel} & $\rightarrow$ & \nt{OpRel} \nt{Arit}\,{\scriptsize(23)} $\mid$ $\varepsilon$\,{\scriptsize(24)} \\
+\nt{OpRel} & $\rightarrow$ & \tm{==}\,{\scriptsize(25)} $\mid$ \tm{!=}\,{\scriptsize(26)} $\mid$ \tm{<}\,{\scriptsize(27)} $\mid$ \tm{<=}\,{\scriptsize(28)} $\mid$ \tm{>}\,{\scriptsize(29)} $\mid$ \tm{>=}\,{\scriptsize(30)} \\
+\nt{Arit} & $\rightarrow$ & \nt{Term} \nt{AritCola}\,{\scriptsize(31)} \\
+\nt{AritCola} & $\rightarrow$ & \tm{+} \nt{Term} \nt{AritCola}\,{\scriptsize(32)} $\mid$ \tm{-} \nt{Term} \nt{AritCola}\,{\scriptsize(33)} $\mid$ $\varepsilon$\,{\scriptsize(34)} \\
+\nt{Term} & $\rightarrow$ & \nt{Factor} \nt{TermCola}\,{\scriptsize(35)} \\
+\nt{TermCola} & $\rightarrow$ & \tm{*} \nt{Factor} \nt{TermCola}\,{\scriptsize(36)} $\mid$ \tm{/} \nt{Factor} \nt{TermCola}\,{\scriptsize(37)} $\mid$ \tm{\%} \nt{Factor} \nt{TermCola}\,{\scriptsize(38)} $\mid$ $\varepsilon$\,{\scriptsize(39)} \\
+\nt{Factor} & $\rightarrow$ & \tm{num}\,{\scriptsize(40)} $\mid$ \tm{id}\,{\scriptsize(41)} $\mid$ \tm{(} \nt{Expr} \tm{)}\,{\scriptsize(42)} $\mid$ \tm{-} \nt{Factor}\,{\scriptsize(43)} \\

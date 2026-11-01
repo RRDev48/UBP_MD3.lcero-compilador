@@ -1,0 +1,10 @@
+// SALIDA: 21
+// Máximo común divisor por el algoritmo de Euclides
+int a = 1071;
+int b = 462;
+while (b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+}
+print(a);

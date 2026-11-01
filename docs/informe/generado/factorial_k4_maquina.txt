@@ -1,0 +1,9 @@
+q0    mov   R2, 10
+q1    mov   R1, 1
+q2    gt    R0, R2, 1
+q3    jz    R0, q7
+q4    mul   R1, R1, R2
+q5    sub   R2, R2, 1
+q6    jmp   q2
+q7    print R1
+q8    halt

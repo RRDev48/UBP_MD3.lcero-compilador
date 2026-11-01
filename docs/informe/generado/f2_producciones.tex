@@ -1,0 +1,43 @@
+(1) & \nt{Programa} & $\rightarrow$ & \nt{ListaSent} \\
+(2) & \nt{ListaSent} & $\rightarrow$ & \nt{Sent} \nt{ListaSent} \\
+(3) & \nt{ListaSent} & $\rightarrow$ & $\varepsilon$ \\
+(4) & \nt{Sent} & $\rightarrow$ & \nt{Decl} \\
+(5) & \nt{Sent} & $\rightarrow$ & \nt{Asig} \\
+(6) & \nt{Sent} & $\rightarrow$ & \nt{Si} \\
+(7) & \nt{Sent} & $\rightarrow$ & \nt{Mientras} \\
+(8) & \nt{Sent} & $\rightarrow$ & \nt{Imprimir} \\
+(9) & \nt{Sent} & $\rightarrow$ & \nt{Bloque} \\
+(10) & \nt{Decl} & $\rightarrow$ & \tm{int} \tm{id} \nt{DeclInit} \tm{;} \\
+(11) & \nt{DeclInit} & $\rightarrow$ & \tm{=} \nt{Expr} \\
+(12) & \nt{DeclInit} & $\rightarrow$ & $\varepsilon$ \\
+(13) & \nt{Asig} & $\rightarrow$ & \tm{id} \tm{=} \nt{Expr} \tm{;} \\
+(14) & \nt{Si} & $\rightarrow$ & \tm{if} \tm{(} \nt{Expr} \tm{)} \nt{Bloque} \nt{SiNo} \\
+(15) & \nt{SiNo} & $\rightarrow$ & \tm{else} \nt{CuerpoSiNo} \\
+(16) & \nt{SiNo} & $\rightarrow$ & $\varepsilon$ \\
+(17) & \nt{CuerpoSiNo} & $\rightarrow$ & \nt{Bloque} \\
+(18) & \nt{CuerpoSiNo} & $\rightarrow$ & \nt{Si} \\
+(19) & \nt{Mientras} & $\rightarrow$ & \tm{while} \tm{(} \nt{Expr} \tm{)} \nt{Bloque} \\
+(20) & \nt{Imprimir} & $\rightarrow$ & \tm{print} \tm{(} \nt{Expr} \tm{)} \tm{;} \\
+(21) & \nt{Bloque} & $\rightarrow$ & \tm{\{} \nt{ListaSent} \tm{\}} \\
+(22) & \nt{Expr} & $\rightarrow$ & \nt{Arit} \nt{ExprRel} \\
+(23) & \nt{ExprRel} & $\rightarrow$ & \nt{OpRel} \nt{Arit} \\
+(24) & \nt{ExprRel} & $\rightarrow$ & $\varepsilon$ \\
+(25) & \nt{OpRel} & $\rightarrow$ & \tm{==} \\
+(26) & \nt{OpRel} & $\rightarrow$ & \tm{!=} \\
+(27) & \nt{OpRel} & $\rightarrow$ & \tm{<} \\
+(28) & \nt{OpRel} & $\rightarrow$ & \tm{<=} \\
+(29) & \nt{OpRel} & $\rightarrow$ & \tm{>} \\
+(30) & \nt{OpRel} & $\rightarrow$ & \tm{>=} \\
+(31) & \nt{Arit} & $\rightarrow$ & \nt{Term} \nt{AritCola} \\
+(32) & \nt{AritCola} & $\rightarrow$ & \tm{+} \nt{Term} \nt{AritCola} \\
+(33) & \nt{AritCola} & $\rightarrow$ & \tm{-} \nt{Term} \nt{AritCola} \\
+(34) & \nt{AritCola} & $\rightarrow$ & $\varepsilon$ \\
+(35) & \nt{Term} & $\rightarrow$ & \nt{Factor} \nt{TermCola} \\
+(36) & \nt{TermCola} & $\rightarrow$ & \tm{*} \nt{Factor} \nt{TermCola} \\
+(37) & \nt{TermCola} & $\rightarrow$ & \tm{/} \nt{Factor} \nt{TermCola} \\
+(38) & \nt{TermCola} & $\rightarrow$ & \tm{\%} \nt{Factor} \nt{TermCola} \\
+(39) & \nt{TermCola} & $\rightarrow$ & $\varepsilon$ \\
+(40) & \nt{Factor} & $\rightarrow$ & \tm{num} \\
+(41) & \nt{Factor} & $\rightarrow$ & \tm{id} \\
+(42) & \nt{Factor} & $\rightarrow$ & \tm{(} \nt{Expr} \tm{)} \\
+(43) & \nt{Factor} & $\rightarrow$ & \tm{-} \nt{Factor} \\

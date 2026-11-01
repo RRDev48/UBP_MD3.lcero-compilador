@@ -1,0 +1,10 @@
+// BUCLE
+// El incremento quedó dentro del if y nunca se ejecuta
+int i = 0;
+int suma = 0;
+while (i < 10) {
+    suma = suma + i;
+    if (suma > 1000) {
+        i = i + 1;
+    }
+}

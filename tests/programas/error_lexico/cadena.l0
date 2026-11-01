@@ -1,0 +1,2 @@
+// ERROR: léxico 2:7
+print("hola");

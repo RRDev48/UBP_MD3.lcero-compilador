@@ -1,0 +1,85 @@
+\nt{Programa} & regla 1 ($B$ es el símbolo inicial) & \{\tm{\$}\} \\
+ & \textbf{resultado} & \textbf{$\{$\tm{\$}$\}$} \\
+\midrule
+\nt{ListaSent} & (1) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Programa}) \\
+ & (21) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{\}}$\}$ \\
+ & \textbf{resultado} & \textbf{$\{$\tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Sent} & (2) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}$\}$ \\
+ & (2) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{ListaSent}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Decl} & (4) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Sent}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{DeclInit} & (10) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{;}$\}$ \\
+ & \textbf{resultado} & \textbf{$\{$\tm{;}$\}$} \\
+\midrule
+\nt{Asig} & (5) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Sent}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Si} & (6) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Sent}) \\
+ & (18) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{CuerpoSiNo}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{SiNo} & (14) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Si}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{CuerpoSiNo} & (15) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{SiNo}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Mientras} & (7) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Sent}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Imprimir} & (8) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Sent}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Bloque} & (9) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Sent}) \\
+ & (14) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{else}$\}$ \\
+ & (14) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Si}) \\
+ & (17) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{CuerpoSiNo}) \\
+ & (19) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Mientras}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{int}, \tm{if}, \tm{else}, \tm{while}, \tm{print}, \tm{id}, \tm{\{}, \tm{\}}, \tm{\$}$\}$} \\
+\midrule
+\nt{Expr} & (11) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{DeclInit}) \\
+ & (13) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{;}$\}$ \\
+ & (14) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{)}$\}$ \\
+ & (19) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{)}$\}$ \\
+ & (20) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{)}$\}$ \\
+ & (42) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{)}$\}$ \\
+ & \textbf{resultado} & \textbf{$\{$\tm{)}, \tm{;}$\}$} \\
+\midrule
+\nt{ExprRel} & (22) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Expr}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{)}, \tm{;}$\}$} \\
+\midrule
+\nt{OpRel} & (23) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$ \\
+ & \textbf{resultado} & \textbf{$\{$\tm{id}, \tm{num}, \tm{-}, \tm{(}$\}$} \\
+\midrule
+\nt{Arit} & (22) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}$\}$ \\
+ & (22) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Expr}) \\
+ & (23) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{ExprRel}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$} \\
+\midrule
+\nt{AritCola} & (31) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Arit}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$} \\
+\midrule
+\nt{Term} & (31) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{+}, \tm{-}$\}$ \\
+ & (31) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Arit}) \\
+ & (32) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{+}, \tm{-}$\}$ \\
+ & (32) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{AritCola}) \\
+ & (33) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{+}, \tm{-}$\}$ \\
+ & (33) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{AritCola}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{+}, \tm{-}, \tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$} \\
+\midrule
+\nt{TermCola} & (35) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Term}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{+}, \tm{-}, \tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$} \\
+\midrule
+\nt{Factor} & (35) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{*}, \tm{/}, \tm{\%}$\}$ \\
+ & (35) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{Term}) \\
+ & (36) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{*}, \tm{/}, \tm{\%}$\}$ \\
+ & (36) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{TermCola}) \\
+ & (37) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{*}, \tm{/}, \tm{\%}$\}$ \\
+ & (37) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{TermCola}) \\
+ & (38) regla 2: $\mathrm{First}(\beta)-\{\varepsilon\}$ & $\{$\tm{*}, \tm{/}, \tm{\%}$\}$ \\
+ & (38) regla 3: $\beta \Rightarrow^{*} \varepsilon$ & $\mathrm{Follow}$(\nt{TermCola}) \\
+ & \textbf{resultado} & \textbf{$\{$\tm{+}, \tm{-}, \tm{*}, \tm{/}, \tm{\%}, \tm{==}, \tm{!=}, \tm{<}, \tm{<=}, \tm{>}, \tm{>=}, \tm{)}, \tm{;}$\}$} \\

@@ -1,0 +1,20 @@
+    R0 = 0
+    store [1] = R0
+    R2 = 1
+    R1 = 0
+L1:
+    R0 = R1 < 15
+    ifz R0 goto L2
+    R0 = load [1]
+    print R0
+    R0 = load [1]
+    R0 = R0 + R2
+    store [0] = R0
+    R0 = R2
+    store [1] = R0
+    R0 = load [0]
+    R2 = R0
+    R1 = R1 + 1
+    goto L1
+L2:
+    halt

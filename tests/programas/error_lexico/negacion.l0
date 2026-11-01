@@ -1,0 +1,5 @@
+// ERROR: léxico 3:5
+int x = 1;
+if (!x) {
+    print(x);
+}
